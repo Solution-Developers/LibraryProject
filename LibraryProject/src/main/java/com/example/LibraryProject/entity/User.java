@@ -63,7 +63,7 @@ public class User {
     private LocalDateTime createDate;
 
 
-    @Nullable //? neden altı çizili
+    @Column(nullable = true) //? neden altı çizili
     //todo Hash ne yapıcaz???
     private String resetPasswordCode;
 
