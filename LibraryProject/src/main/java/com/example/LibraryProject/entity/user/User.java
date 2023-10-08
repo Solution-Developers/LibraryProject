@@ -45,7 +45,7 @@ public class User {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "ddd-ddd-dddd") //todo format phone number kısmı
     private String phone;
 
-    @Nullable //? nerden import edicez
+    @Column(nullable = true)
     @JsonFormat(shape=JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
@@ -63,7 +63,7 @@ public class User {
     private LocalDateTime createDate;
 
 
-    @Nullable //? neden altı çizili
+    @Column(nullable = true)
     //todo Hash ne yapıcaz???
     private String resetPasswordCode;
 
