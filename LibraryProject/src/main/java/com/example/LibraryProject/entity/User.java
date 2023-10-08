@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "t_user")
@@ -45,7 +46,7 @@ public class User {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "ddd-ddd-dddd") //todo format phone number kısmı
     private String phone;
 
-    @Nullable //? nerden import edicez
+    @Column(nullable = true) //? nerden import edicez
     @JsonFormat(shape=JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
@@ -63,13 +64,20 @@ public class User {
     private LocalDateTime createDate;
 
 
-    @Nullable //? neden altı çizili
+    @Column(nullable = true)
     //todo Hash ne yapıcaz???
     private String resetPasswordCode;
 
     @NotNull
     //todo default false nasıl yapıcaz??
     private Boolean builtIn;
+
+
+    @OneToMany(mappedBy = "userId")
+    private List<UserRole> userRoleList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Loan> userId;
 
 
 
