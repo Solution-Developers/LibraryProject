@@ -45,7 +45,7 @@ public class User {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "ddd-ddd-dddd") //todo format phone number kısmı
     private String phone;
 
-    @Column(nullable = true)
+    @Column(nullable = true) //nullable değiştirdim
     @JsonFormat(shape=JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
