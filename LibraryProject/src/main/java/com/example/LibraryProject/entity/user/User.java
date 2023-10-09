@@ -1,9 +1,9 @@
-package com.example.LibraryProject.entity;
+package com.example.LibraryProject.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.lang.Nullable;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
