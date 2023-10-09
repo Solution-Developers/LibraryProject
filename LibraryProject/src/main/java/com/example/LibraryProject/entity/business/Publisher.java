@@ -1,6 +1,5 @@
 package com.example.LibraryProject.entity.business;
 
-
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -8,24 +7,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-
+@Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Entity
-public class Author {
+@AllArgsConstructor
+@Builder(toBuilder = true)
+
+public class Publisher {
 
     @Id
     @GeneratedValue
-    private long id;
+    private long publisherId;
 
     @NotNull
-    private String name;
+    private String publisherName;
 
     @NotNull
     private Boolean builtIn;
-
 
 }
