@@ -1,2 +1,4 @@
-package com.example.LibraryProject.entity.business;public class Author {
+package com.example.LibraryProject.entity.business;
+
+public class Author {
 }
