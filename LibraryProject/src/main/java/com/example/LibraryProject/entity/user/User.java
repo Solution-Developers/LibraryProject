@@ -1,4 +1,4 @@
-package com.example.LibraryProject.entity;
+package com.example.LibraryProject.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -70,8 +70,6 @@ public class User {
     @NotNull
     //todo default false nasıl yapıcaz??
     private Boolean builtIn;
-
-
 
 
 }

@@ -1,0 +1,25 @@
+emre hasan
+♦reports
+♦loan
+-->loans
+-->publishers
+-->authors
+
+
+
+
+tugba songul
+♦users
+♦publishers
+-->roles
+-->userroles
+-->users
+
+
+
+fevzi mustafa
+♦books
+♦authosrs
+♦categories
+-->books
+-->categories
