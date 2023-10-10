@@ -12,4 +12,15 @@ public class BookController {
     private final BookService bookService;
 
 
+    // * NOT : saveBooks() ******************** POST - Admin
+
+    // * NOT : getBooksByPageable() ******************** GET - Tüm roller
+
+    // * NOT : getBookById() ******************** GET - Tüm roller
+
+    // * NOT : updateBooksById() ******************** PUT - Admin
+
+    // * NOT : deleteBooksById() ******************** DELETE - Admin
+
+
 }

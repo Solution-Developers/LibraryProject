@@ -10,4 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/authors")
 public class AuthorController {
     private final AuthorService authorService;
+
+
+    // * NOT : saveAuthors() ******************** POST - Admin
+
+    // * NOT : getAllAuthorsByPageable() ******************** GET - Anonymous
+
+    // * NOT : getAuthorsById() ******************** GET - Anonymous
+
+    // * NOT : updateAuthorsById() ******************** PUT - Admin
+
+    // * NOT : deleteAuthorsById() ******************** DELETE - Admin
 }

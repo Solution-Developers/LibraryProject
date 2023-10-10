@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -46,6 +44,9 @@ public class Loan {
     @Nullable
     //todo : notes for employee or admin
     private String notes;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Book book;
 
 
 
