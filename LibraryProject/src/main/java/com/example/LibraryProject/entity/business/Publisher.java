@@ -2,10 +2,9 @@ package com.example.LibraryProject.entity.business;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,5 +24,8 @@ public class Publisher {
 
     @NotNull
     private Boolean builtIn;
+
+    @OneToMany(mappedBy = "publisherId", cascade = CascadeType.ALL)
+    private List<Book> books;
 
 }
