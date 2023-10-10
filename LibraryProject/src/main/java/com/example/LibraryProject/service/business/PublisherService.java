@@ -11,6 +11,7 @@ import com.example.LibraryProject.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,7 +31,7 @@ public class PublisherService {
     }
 
 
-//---------------------------------------------------------
+    //---------------------------------------------------------
 
 
     //It will return a publisher by id
@@ -41,7 +42,7 @@ public class PublisherService {
     }
 
 
-    //id kontrolu
+    //is publisher exists by id?
     private Publisher isPublisherExist(Long id){
         return publisherRepository.findById(id).orElseThrow(()->
                 new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_PUBLISHER,
@@ -49,10 +50,9 @@ public class PublisherService {
     }
 
 
-//---------------------------------------------------------
+    //---------------------------------------------------------
 
-
-
+    //is publisher exists by name?
     private Publisher isPublisherExistByName(String name){
        Publisher publisher= publisherRepository.findByPublisherName(name);
        if (publisher.getPublisherId()==null){
@@ -66,5 +66,23 @@ public class PublisherService {
     public Publisher createPublisher(PublisherRequest request) {
         return null;
     }
+
+
+
+
+    //---------------------------------------------------------
+    //It will delete the publisher
+
+    public PublisherResponse deletePublisherById(Long id){
+        Publisher publisher = isPublisherExist(id);
+        publisherRepository.delete(publisher);
+        return publisherMapper.mapPublisherToPublisherResponse(publisher);
+
+    }
+
+
+    //---------------------------------------------------------
+    //It will update the publisher
+
 
 }
