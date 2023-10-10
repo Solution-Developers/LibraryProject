@@ -2,7 +2,6 @@ package com.example.LibraryProject.entity.user;
 
 
 import com.example.LibraryProject.entity.enums.RoleType;
-import com.example.LibraryProject.entity.user.UserRole;
 import lombok.*;
 
 import javax.persistence.*;

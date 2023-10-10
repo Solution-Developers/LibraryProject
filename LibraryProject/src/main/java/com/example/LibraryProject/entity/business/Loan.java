@@ -1,5 +1,6 @@
 package com.example.LibraryProject.entity.business;
 
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.lang.Nullable;
@@ -8,7 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.time.DateTimeException;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -45,6 +46,7 @@ public class Loan {
     @Nullable
     //todo : notes for employee or admin
     private String notes;
+
 
 
 
