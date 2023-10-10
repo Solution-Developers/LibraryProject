@@ -64,7 +64,10 @@ public class PublisherService {
 
     //It will create a publisher
     public Publisher createPublisher(PublisherRequest request) {
-        return null;
+        isPublisherExistByName(request.getPublisherName());
+        Publisher publisher=publisherMapper.mapPublisherRequestToPublisher(request);
+        Publisher savedPublisher=publisherRepository.save(publisher);
+        return savedPublisher;
     }
 
 }
