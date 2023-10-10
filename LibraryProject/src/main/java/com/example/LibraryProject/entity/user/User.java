@@ -1,6 +1,7 @@
 package com.example.LibraryProject.entity.user;
 
 
+import com.example.LibraryProject.entity.business.Loan;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "t_user")
@@ -53,6 +55,7 @@ public class User {
    @NotNull(message = "Email must not be empty")
    @Size(min=10, max=80)
    @Email
+   @Column(unique = true)
    private String email;
 
    @NotNull(message = "Password must not be empty")
@@ -71,4 +74,10 @@ public class User {
     @NotNull
     //todo default false nasıl yapıcaz??
     private Boolean builtIn;
+
+    @OneToMany(mappedBy = "user")
+    private List<Loan> loanList;
+
+    @OneToMany(mappedBy = "userId")
+    private List<UserRole> userRoleList;
 }
