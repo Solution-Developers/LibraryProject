@@ -1,6 +1,7 @@
 package com.example.LibraryProject.entity.business;
 
 
+import com.example.LibraryProject.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.lang.Nullable;
@@ -21,13 +22,13 @@ public class Loan {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @NotNull
-    private long userId;
+    private Long userId;
 
     @NotNull
-    private long bookId;
+    private Long bookId;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd,'T' HH:mm:ss",timezone = "UTC")
@@ -47,6 +48,9 @@ public class Loan {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Book book;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private User user;
 
 
 
