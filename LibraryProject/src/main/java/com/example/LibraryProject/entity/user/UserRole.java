@@ -1,7 +1,4 @@
 package com.example.LibraryProject.entity.user;
-
-
-import com.example.LibraryProject.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +19,5 @@ public class UserRole {
 
     @ManyToOne
     private User userId;
+
 }
