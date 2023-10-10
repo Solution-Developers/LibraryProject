@@ -20,6 +20,7 @@ public class PublisherMapper {
         return PublisherResponse.builder()
                 .publisherId(publisher.getPublisherId())
                 .publisherName(publisher.getPublisherName())
+                .books(publisher.getBooks())
                 .build();
     }
 

@@ -27,11 +27,16 @@ public class PublisherController {
         return publisherService.getPublishersByPage(page,size,sort,type);
 
     }
+
+    //---------------------------------------------------------
+
     //It will return a publisher by id
     @GetMapping("/{id}")
     public PublisherResponse getPublisherById(@PathVariable Long id){
         return publisherService.getPublisherById(id);
     }
+
+    //---------------------------------------------------------
 
     //It will create a publisher
     @PostMapping
