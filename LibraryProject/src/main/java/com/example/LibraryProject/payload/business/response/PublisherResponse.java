@@ -1,29 +1,19 @@
-package com.example.LibraryProject.entity.business;
+package com.example.LibraryProject.payload.business.response;
 
 import lombok.*;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+public class PublisherResponse {
 
-public class Publisher {
-
-    @Id
-    @GeneratedValue
     private Long publisherId;
 
-    @NotNull
     private String publisherName;
-
-    @NotNull
-    private Boolean builtIn;
-
 }
