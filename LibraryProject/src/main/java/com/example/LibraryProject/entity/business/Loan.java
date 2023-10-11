@@ -1,13 +1,13 @@
+
 package com.example.LibraryProject.entity.business;
 
 
+import com.example.LibraryProject.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.;
 import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -23,13 +23,13 @@ public class Loan {
 
     @Id
     @GeneratedValue
-    private long loanId;
+    private Long id;
 
     @NotNull
-    private long userId;
+    private Long userId;
 
     @NotNull
-    private long bookId;
+    private Long bookId;
 
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd,'T' HH:mm:ss",timezone = "UTC")
@@ -46,6 +46,12 @@ public class Loan {
     @Nullable
     //todo : notes for employee or admin
     private String notes;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Book book;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private User user;
 
 
 
