@@ -40,8 +40,9 @@ public class PublisherController {
 
     //It will create a publisher
     @PostMapping
-    public Publisher createPublisher(@RequestBody @Valid PublisherRequest request){
-        return publisherService.createPublisher(request);
+    public ResponseEntity<Publisher> createPublisher(@RequestBody @Valid PublisherRequest request){
+      Publisher publisher=  publisherService.createPublisher(request);
+        return ResponseEntity.ok(publisher);
     }
 
 

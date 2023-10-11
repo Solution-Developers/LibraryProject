@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 @Getter
@@ -17,7 +18,7 @@ public class UserRole {
     @ManyToOne
     private Role roleId;
 
-    @ManyToOne
+    @OneToOne
     private User userId;
 
 }
