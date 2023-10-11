@@ -92,14 +92,16 @@ public class PublisherService {
 
     public ResponseMessage<PublisherResponse> updatePublisher(Long id, PublisherRequest publisherRequest){
 
-        Publisher publisher = isPublisherExist(id);
+        isPublisherExist(id);
 
         //? publisher unique olmalı mı??sonra bak
 
-        Publisher publisherUpdated = publisherRepository.save(publisherMapper.mapPublisherRequestToPublisher(id,publisherRequest));
+        Publisher publisher = publisherMapper.mapPublisherRequestToPublisher(publisherRequest);
+
+        Publisher publisherUpdated = publisherRepository.save(publisher);
 
         return ResponseMessage.<PublisherResponse>builder()
-                .message(SuccessMessages.PUBLISHER_UPDATE)
+                .message(SuccessMessages.PUBLISHER_UPDATED)
                 .httpStatus(HttpStatus.OK)
                 .object(publisherMapper.mapPublisherToPublisherResponse(publisherUpdated))
                 .build();
