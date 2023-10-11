@@ -23,7 +23,7 @@ public class Loan {
 
     @Id
     @GeneratedValue
-    private long id;
+    private long loanId;
 
     @NotNull
     private long userId;
