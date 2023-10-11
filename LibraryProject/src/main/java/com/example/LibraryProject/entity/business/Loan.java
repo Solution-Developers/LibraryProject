@@ -1,3 +1,4 @@
+
 package com.example.LibraryProject.entity.business;
 
 
@@ -6,7 +7,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
+
+
+
 import javax.persistence.*;
+
 import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -54,7 +59,7 @@ public class Loan {
 
 
 
-
+//öylesine yazıldı
 
 
 }

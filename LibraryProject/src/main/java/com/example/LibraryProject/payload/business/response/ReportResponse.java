@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class ReportResponse {
+public class ReportResponse<M> {
 
     private int book;
     private int authors;

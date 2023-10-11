@@ -28,6 +28,9 @@ public class PublisherController {
 
     }
 
+
+
+
     //---------------------------------------------------------
 
     //It will return a publisher by id
@@ -35,6 +38,8 @@ public class PublisherController {
     public PublisherResponse getPublisherById(@PathVariable Long id){
         return publisherService.getPublisherById(id);
     }
+
+
 
     //---------------------------------------------------------
 
@@ -44,6 +49,24 @@ public class PublisherController {
       Publisher publisher=  publisherService.createPublisher(request);
         return ResponseEntity.ok(publisher);
     }
+
+
+
+
+
+    //-----------------------------------------------------
+    //It will delete the publisher
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<PublisherResponse> deletePublisherById(@PathVariable Long id){
+
+        return ResponseEntity.ok(publisherService.deletePublisherById(id));
+    }
+
+
+
+    //---------------------------------------------------------
+    //It will update the publisher
 
 
 
