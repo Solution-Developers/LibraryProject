@@ -4,9 +4,7 @@ package com.example.LibraryProject.entity.business;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
@@ -28,6 +26,8 @@ public class Author {
     @NotNull
     private Boolean builtIn;
 
+    @OneToMany(mappedBy = "authorId", cascade = CascadeType.ALL)
+    private Book books;
 
 
 }

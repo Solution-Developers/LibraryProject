@@ -2,12 +2,10 @@ package com.example.LibraryProject.entity.business;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,12 +25,16 @@ public class Book {
 
     private int pageCount;
 
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Long authorId;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Long publisherId;
 
     private int publishDate;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Long categoryId;
 
     private File image;
@@ -48,4 +50,7 @@ public class Book {
     private LocalDateTime createDate;
 
     private boolean builtIn;
+
+    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL)
+    private List<Loan> loans;
 }

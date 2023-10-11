@@ -10,4 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
+
+    // * NOT : saveCategories() ******************** POST - Admin
+
+    // * NOT : getCategoriesByPageable() ******************** GET - Anonymous
+
+    // * NOT : getCategoriesById() ******************** GET - Anonymous
+
+    // * NOT : updateCategoriesById() ******************** PUT - Admin
+
+    // * NOT : deleteCategoriesById() ******************** DELETE - Admin
+
+
+
 }

@@ -27,17 +27,45 @@ public class PublisherController {
         return publisherService.getPublishersByPage(page,size,sort,type);
 
     }
+
+
+
+
+    //---------------------------------------------------------
+
     //It will return a publisher by id
     @GetMapping("/{id}")
     public PublisherResponse getPublisherById(@PathVariable Long id){
         return publisherService.getPublisherById(id);
     }
 
+
+
+    //---------------------------------------------------------
+
     //It will create a publisher
     @PostMapping
     public Publisher createPublisher(@RequestBody @Valid PublisherRequest request){
         return publisherService.createPublisher(request);
     }
+
+
+
+
+
+    //-----------------------------------------------------
+    //It will delete the publisher
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<PublisherResponse> deletePublisherById(@PathVariable Long id){
+
+        return ResponseEntity.ok(publisherService.deletePublisherById(id));
+    }
+
+
+
+    //---------------------------------------------------------
+    //It will update the publisher
 
 
 
