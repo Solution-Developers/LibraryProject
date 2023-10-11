@@ -4,14 +4,17 @@ import com.example.LibraryProject.entity.business.Publisher;
 import com.example.LibraryProject.exception.ResourceNotFoundException;
 import com.example.LibraryProject.payload.business.request.PublisherRequest;
 import com.example.LibraryProject.payload.business.response.PublisherResponse;
+import com.example.LibraryProject.payload.business.response.ResponseMessage;
 import com.example.LibraryProject.payload.mapper.PublisherMapper;
 import com.example.LibraryProject.payload.message.ErrorMessages;
+import com.example.LibraryProject.payload.message.SuccessMessages;
 import com.example.LibraryProject.repository.business.PublisherRepository;
 import com.example.LibraryProject.service.helper.PageableHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -86,6 +89,22 @@ public class PublisherService {
 
     //---------------------------------------------------------
     //It will update the publisher
+
+    public ResponseMessage<PublisherResponse> updatePublisher(Long id, PublisherRequest publisherRequest){
+
+        Publisher publisher = isPublisherExist(id);
+
+        //? publisher unique olmalı mı??sonra bak
+
+        Publisher publisherUpdated = publisherRepository.save(publisherMapper.mapPublisherRequestToPublisher(id,publisherRequest));
+
+        return ResponseMessage.<PublisherResponse>builder()
+                .message(SuccessMessages.PUBLISHER_UPDATE)
+                .httpStatus(HttpStatus.OK)
+                .object(publisherMapper.mapPublisherToPublisherResponse(publisherUpdated))
+                .build();
+
+    }
 
 
 }
