@@ -3,6 +3,7 @@ package com.example.LibraryProject.controller.business;
 import com.example.LibraryProject.entity.business.Publisher;
 import com.example.LibraryProject.payload.business.request.PublisherRequest;
 import com.example.LibraryProject.payload.business.response.PublisherResponse;
+import com.example.LibraryProject.payload.business.response.ResponseMessage;
 import com.example.LibraryProject.service.business.PublisherService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class PublisherController {
 
     // It will return publishers by page
     @GetMapping //http://localhost:8080/publishers?page=1&size=10&sort=name&type=asc
-    public Page<PublisherResponse> getPublishersByPage (@RequestParam(value = "page") int page,
+    public Page<PublisherResponse> getPublishersByPage(@RequestParam(value = "page") int page,
                                                         @RequestParam(value = "size") int size,
                                                         @RequestParam(value = "sort") String sort,
                                                         @RequestParam(value = "type") String type){
@@ -66,6 +67,15 @@ public class PublisherController {
 
     //---------------------------------------------------------
     //It will update the publisher
+
+    @PutMapping("/update/{id}")
+    public ResponseMessage<PublisherResponse> updatePublisher(@PathVariable Long id,
+                                                                              @RequestBody @Valid PublisherRequest publisherRequest){
+
+        return publisherService.updatePublisher(id, publisherRequest);
+    }
+
+
 
 
 
