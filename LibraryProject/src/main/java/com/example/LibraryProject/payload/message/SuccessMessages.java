@@ -4,5 +4,5 @@ public class SuccessMessages {
     private SuccessMessages() {
     }
 
-    public final String SAVE_PUBLISHER="Publisher is created successfully.";
+    public static final String SAVE_PUBLISHER="Publisher is created successfully.";
 }
