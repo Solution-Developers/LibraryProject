@@ -12,6 +12,7 @@ import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "t_user")
@@ -79,5 +80,5 @@ public class User {
     private List<Loan> loanList;
 
     @OneToMany(mappedBy = "userId")
-    private List<UserRole> userRoleList;
+    private Set<UserRole> userRole;
 }
