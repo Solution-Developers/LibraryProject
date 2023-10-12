@@ -11,5 +11,7 @@ public class SuccessMessages {
 
     public static final String PUBLISHER_UPDATED= "Publisher is Updated" ;
 
+    public static final String AUTHOR_DELETED= "Author is deleted" ;
+
 
 }

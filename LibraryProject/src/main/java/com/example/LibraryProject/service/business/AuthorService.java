@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthorService {
-    private final AuthorController authorController;
     private final AuthorRepository authorRepository;
     private final PageableHelper pageableHelper;
     private final AuthorHelper authorHelper;
@@ -58,10 +57,28 @@ public class AuthorService {
 
 
     // * NOT : getAuthorsById() ********************
-    public AuthorResponse getAuthorById(Long id) {
+    public ResponseMessage<AuthorResponse> getAuthorById(Long id) {
 
-        return mapAuthorToAuthorResponse(authorHelper.isAuthorExistById(id));
+        return ResponseMessage.<AuthorResponse>builder()
+                .httpStatus(HttpStatus.OK)
+                .object(mapAuthorToAuthorResponse(authorHelper.isAuthorExistById(id)))
+                .build();
     }
 
 
+    public ResponseMessage deleteAuthorById(Long id) {
+        authorHelper.isAuthorExistById(id);
+        authorRepository.deleteById(id);
+
+        return ResponseMessage.builder()
+                .httpStatus(HttpStatus.OK)
+                .message(String.format(SuccessMessages.AUTHOR_DELETED,id))
+                .build();
+
+    }
+
+    public ResponseMessage<AuthorResponse> updateAuthorById(AuthorRequest authorRequest, Long id) {
+        authorHelper.isAuthorExistById(id); // * Yarım kaldi, logic yazilacak
+        return null;
+    }
 }
