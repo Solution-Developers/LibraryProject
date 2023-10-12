@@ -2,6 +2,7 @@ package com.example.LibraryProject.payload.mapper;
 
 import com.example.LibraryProject.entity.business.Loan;
 import com.example.LibraryProject.payload.business.request.LoanRequest;
+import com.example.LibraryProject.payload.business.response.LoanResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,5 +16,15 @@ public class LoanMapper {
             .returnDate(loanRequest.getReturnDate())
             .notes(loanRequest.getNotes())
             .build();
+    }
+
+    public  LoanResponse mapLoanToLoanResponse(Loan loan){
+
+        return LoanResponse.builder()
+                .loanDate(loan.getLoanDate())
+                .expireDate(loan.getExpireDate())
+                .returnDate(loan.getReturnDate())
+                .notes(loan.getNotes())
+                .build();
     }
 }
