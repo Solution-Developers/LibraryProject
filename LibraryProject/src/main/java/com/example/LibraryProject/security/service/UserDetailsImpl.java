@@ -16,10 +16,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -43,7 +40,7 @@ public class UserDetailsImpl implements UserDetails {
 
     private Boolean builtIn;
 
-    public UserDetailsImpl(Long id,String firstName,String lastName,String phone,String email,String password,Boolean builtIn, String role){
+    public UserDetailsImpl(Long id,String firstName,String lastName,String phone,String email,String password,Boolean builtIn, Set<UserRole> role){
         this.id=id;
         this.firstName=firstName;
         this.lastName=lastName;
@@ -52,7 +49,7 @@ public class UserDetailsImpl implements UserDetails {
         this.password=password;
         this.builtIn=builtIn;
         List<GrantedAuthority>  grantedAuthorities=new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(role));//string ifadeyi SimpleGrantedAuthority ye cevirir
+        grantedAuthorities.add(new SimpleGrantedAuthority(role.toString()));//string ifadeyi SimpleGrantedAuthority ye cevirir
         this.authorities=grantedAuthorities;
     }
 

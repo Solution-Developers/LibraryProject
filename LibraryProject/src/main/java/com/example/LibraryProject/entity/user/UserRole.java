@@ -18,7 +18,7 @@ public class UserRole {
     @ManyToOne
     private Role roleId;
 
-    @OneToOne
+    @ManyToOne
     private User userId;
 
 }
