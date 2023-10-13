@@ -7,6 +7,7 @@ import com.example.LibraryProject.exception.ResourceNotFoundException;
 import com.example.LibraryProject.payload.business.request.AuthorRequest;
 import com.example.LibraryProject.payload.business.response.AuthorResponse;
 import com.example.LibraryProject.payload.business.response.ResponseMessage;
+import com.example.LibraryProject.payload.mapper.AuthorMapper;
 import com.example.LibraryProject.payload.message.ErrorMessages;
 import com.example.LibraryProject.payload.message.SuccessMessages;
 import com.example.LibraryProject.repository.business.AuthorRepository;
@@ -24,6 +25,7 @@ public class AuthorService {
     private final AuthorRepository authorRepository;
     private final PageableHelper pageableHelper;
     private final AuthorHelper authorHelper;
+    private final AuthorMapper authorMapper;
 
 
     // * NOT : saveAuthors() ********************
@@ -40,19 +42,21 @@ public class AuthorService {
 
     }
 
-    private AuthorResponse mapAuthorToAuthorResponse(Author author){
+    public AuthorResponse mapAuthorToAuthorResponse(Author author){ // TODO: Pageable yapının islemleri kontrol edilecek
 
         return AuthorResponse.builder()
                 .authorName(author.getName())
                 .build();
     }
 
+
+
     // * NOT : getAllAuthorsByPageable() ********************
 
     public Page<AuthorResponse> getAllAuthorsByPage(int page, int size, String sort, String type) {
         Pageable pageableAuthors = pageableHelper.getPageableWithProperties(page,size,sort,type);
 
-        return authorRepository.findAll(pageableAuthors).map(this::mapAuthorToAuthorResponse);
+        return authorRepository.findAll(pageableAuthors).map(this::mapAuthorToAuthorResponse); // TODO : Bu satir kontrol edilecek
     }
 
 
@@ -66,6 +70,7 @@ public class AuthorService {
     }
 
 
+    // * NOT : deleteAuthorsById() ********************
     public ResponseMessage deleteAuthorById(Long id) {
         authorHelper.isAuthorExistById(id);
         authorRepository.deleteById(id);
@@ -77,8 +82,23 @@ public class AuthorService {
 
     }
 
-    public ResponseMessage<AuthorResponse> updateAuthorById(AuthorRequest authorRequest, Long id) {
-        authorHelper.isAuthorExistById(id); // * Yarım kaldi, logic yazilacak
-        return null;
+
+    // * NOT : updateAuthorsById() ********************
+
+    public ResponseMessage<AuthorResponse> updateAuthorById(AuthorRequest authorRequest, Long authorId) {
+        Author author =authorHelper.isAuthorExistById(authorId);
+
+        if(!author.getName().equalsIgnoreCase(authorRequest.getAuthorName())){
+            authorHelper.isAuthorExistByAuthorName(authorRequest.getAuthorName());
+        }
+
+        Author authorUpdate = authorMapper.mapAuthorToUpdateRequest(authorRequest,authorId);
+        Author savedAuthor = authorRepository.save(authorUpdate);
+
+        return ResponseMessage.<AuthorResponse>builder()
+                .message(SuccessMessages.AUTHOR_UPDATED)
+                .httpStatus(HttpStatus.OK)
+                .object(mapAuthorToAuthorResponse(savedAuthor))
+                .build();
     }
 }
