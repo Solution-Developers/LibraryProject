@@ -16,6 +16,8 @@ public class ErrorMessages {
 
     public static final String NOT_FOUND_LOAN = "Error:  Loan not found with id %s";
 
+    public static final String NOT_FOUND_BOOK = "Error:  Book not found with id %s";
+
 
 
 }
