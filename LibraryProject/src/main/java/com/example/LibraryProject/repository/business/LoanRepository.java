@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 
 public interface LoanRepository extends JpaRepository <Loan,Long>{
-    @Query()
-    Page<Loan> getAllByLoan();
+
 
     Loan getById(Long id);
 

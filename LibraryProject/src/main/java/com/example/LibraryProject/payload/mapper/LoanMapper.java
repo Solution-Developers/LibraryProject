@@ -27,4 +27,14 @@ public class LoanMapper {
                 .notes(loan.getNotes())
                 .build();
     }
+
+    public LoanResponse mapLoanToLoanResponseWithoutNotes(Loan loan){
+        return  LoanResponse.builder()
+                .loanDate(loan.getLoanDate())
+                .expireDate(loan.getExpireDate())
+                .returnDate(loan.getReturnDate())
+                .build();
+    }
+
+
 }
