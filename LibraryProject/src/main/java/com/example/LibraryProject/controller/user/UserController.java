@@ -7,10 +7,7 @@ import com.example.LibraryProject.payload.user.UserRequest;
 import com.example.LibraryProject.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.LibraryProject.payload.user.UserResponse;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +32,24 @@ public class UserController {
 
     }
 
+
+
+    //It will return a user
+    //@GetMapping
+
+
+
+    //It will create a user
+    //@PostMapping
+
+
+
+    //It will update the user
+    //@PutMapping
+
+
+    //It will delete the user
+    //@DeleteMapping
 
 
 }
