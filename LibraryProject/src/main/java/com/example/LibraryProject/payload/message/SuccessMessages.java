@@ -13,5 +13,7 @@ public class SuccessMessages {
 
     public static final String AUTHOR_DELETED= "Author is deleted" ;
 
+    public static final String AUTHOR_UPDATED= "Author is Updated" ;
+
 
 }
