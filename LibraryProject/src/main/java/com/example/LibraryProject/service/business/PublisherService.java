@@ -66,11 +66,15 @@ public class PublisherService {
 
 
     //It will create a publisher
-    public Publisher createPublisher(PublisherRequest request) {
+    public ResponseMessage<Publisher> createPublisher(PublisherRequest request) {
         isPublisherExistByName(request.getPublisherName());
         Publisher publisher=publisherMapper.mapPublisherRequestToPublisher(request);
         Publisher savedPublisher=publisherRepository.save(publisher);
-        return savedPublisher;
+        return ResponseMessage.<Publisher>builder()
+                .httpStatus(HttpStatus.CREATED)
+                .message(SuccessMessages.SAVE_PUBLISHER)
+                .object(savedPublisher)
+                .build();
     }
 
 
@@ -91,8 +95,8 @@ public class PublisherService {
     //It will update the publisher
 
     public ResponseMessage<PublisherResponse> updatePublisher(Long id, PublisherRequest publisherRequest){
-
         isPublisherExist(id);
+
 
         //? publisher unique olmalı mı??sonra bak
 

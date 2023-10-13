@@ -4,6 +4,8 @@ import com.example.LibraryProject.entity.business.Publisher;
 import com.example.LibraryProject.payload.business.request.PublisherRequest;
 import com.example.LibraryProject.payload.business.response.PublisherResponse;
 import com.example.LibraryProject.payload.business.response.ResponseMessage;
+import com.example.LibraryProject.payload.mapper.PublisherMapper;
+import com.example.LibraryProject.payload.message.SuccessMessages;
 import com.example.LibraryProject.service.business.PublisherService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class PublisherController {
     private final PublisherService publisherService;
+
 
     // It will return publishers by page
     @GetMapping //http://localhost:8080/publishers?page=1&size=10&sort=name&type=asc
@@ -46,9 +49,9 @@ public class PublisherController {
 
     //It will create a publisher
     @PostMapping
-    public ResponseEntity<Publisher> createPublisher(@RequestBody @Valid PublisherRequest request){
-      Publisher publisher=  publisherService.createPublisher(request);
-        return ResponseEntity.ok(publisher);
+    public ResponseMessage<Publisher> createPublisher(@RequestBody @Valid PublisherRequest request){
+      return  publisherService.createPublisher(request);
+
     }
 
 

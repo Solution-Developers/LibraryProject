@@ -59,6 +59,8 @@ public class Loan {
 
 
 
+
+
 //öylesine yazıldı
 
 
