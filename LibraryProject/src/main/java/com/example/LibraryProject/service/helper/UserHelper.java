@@ -17,6 +17,7 @@ public class UserHelper {
     return     userRepository.findById(id).orElseThrow(()->
                 new ResolutionException(String.format(ErrorMessages.NOT_FOUND_USER)));
     }
+    //?ResourceNotFoundException
 
     public User isUserExistByEmail(String email){
         return userRepository.findByEmail(email);
