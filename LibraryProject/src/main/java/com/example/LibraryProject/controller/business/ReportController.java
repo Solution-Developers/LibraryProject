@@ -28,7 +28,7 @@ public class ReportController {
 
 
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','ADMIN')")
-    @GetMapping("most-popular-books")
+    @GetMapping("/most-popular-books")
     public Page<ReportResponse>getMostPopularBooks(
             @RequestParam(value = "page",defaultValue = "0") int page,
             @RequestParam(value = "size",defaultValue = "20") int size,
@@ -37,6 +37,41 @@ public class ReportController {
     ){
         return reportService.getMostPopularBooks(page,size,sort,type);
     }
+      @PreAuthorize("hasAnyAuthority('Employee','Admin')")
+      @GetMapping("/unreturned-books")
+    Page<ReportResponse>getUnreturnedBooks(
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size",defaultValue = "20") int size,
+            @RequestParam(value = "sort") String sort,
+            @RequestParam(value = "type") String type
+
+    ){
+        return reportService.getUnreturnedBooks(page,size,sort,type);
+    }
+    @PreAuthorize("hasAnyAuthority('Employee','Admin')")
+    @GetMapping("/expired-books")
+    Page<ReportResponse>getExpiredBooks(
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size",defaultValue = "20") int size,
+            @RequestParam(value = "sort") String sort,
+            @RequestParam(value = "type") String type
+    ){
+        return reportService.getExpiredBooks(page,size,sort,type);
+
+    }
+
+     @PreAuthorize("hasAnyAuthority('Employee','Admin')")
+     @GetMapping("/most-borrowers")
+    Page<ReportResponse>getMostBorrowers(
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size",defaultValue = "20") int size,
+            @RequestParam(value = "sort") String sort,
+            @RequestParam(value = "type") String type
+    ){
+        return reportService.getMostBorrowers(page,size,sort,type);
+
+    }
+
 
 
 

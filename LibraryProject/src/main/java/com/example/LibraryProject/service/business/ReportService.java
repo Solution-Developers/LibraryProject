@@ -42,4 +42,20 @@ public class ReportService {
         Pageable pageable = pageableHelper.getPageableWithProperties(page,size,sort,type);
         return reportRepository.findMostPopularBooks(pageable,size);
     }
+
+    public Page<ReportResponse> getUnreturnedBooks(int page, int size, String sort, String type) {
+        Pageable pageable= pageableHelper.getPageableWithProperties(page, size, sort, type);
+        return reportRepository.findUnreturnedBooks(pageable,size);
+    }
+
+    public Page<ReportResponse> getExpiredBooks(int page, int size, String sort, String type) {
+        Pageable pageable=pageableHelper.getPageableWithProperties(page, size, sort, type);
+        return reportRepository.findExpiredBooks(pageable,size);
+    }
+
+
+    public Page<ReportResponse> getMostBorrowers(int page, int size, String sort, String type) {
+        Pageable pageable=pageableHelper.getPageableWithProperties(page, size, sort, type);
+        return reportRepository.findMostBorrowers(pageable,size);
+    }
 }
