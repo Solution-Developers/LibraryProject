@@ -1,4 +1,4 @@
-package com.example.LibraryProject.payload.business.request;
+package com.example.LibraryProject.payload.business.request.abstracts;
 
 
 import lombok.*;
@@ -13,7 +13,7 @@ import java.io.File;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class BookRequest {
+public abstract class BookRequestUpdate {
 
 
     @NotNull(message = "Please must be write book name")
@@ -27,16 +27,20 @@ public class BookRequest {
     @NotNull(message = "Please must be write book name")
     private Long authorId;
 
+    @NotNull(message = "Please must be write book name")
     private Long publisherId;
 
     private int publishDate;
 
+    @NotNull(message = "Please must be write book name")
     private Long categoryId;
 
     private File image;
 
+    @NotNull(message = "Please must be write book name")
     private String shelfCode;
 
+    @NotNull(message = "Please must be write book name")
     private boolean featured;
 
 }

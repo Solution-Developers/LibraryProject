@@ -16,4 +16,6 @@ public class SuccessMessages {
     public static final String AUTHOR_UPDATED= "Author is Updated" ;
     public static final String USER_UPDATE_MESSAGE = "User is Updated Successfully";
 
+    public static final String BOOK_DELETED= "Book is deleted" ;
+
 }
