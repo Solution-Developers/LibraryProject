@@ -29,4 +29,14 @@ public interface ReportRepository extends JpaRepository<Reports,Long> {
 
     @Query("SELECT b, COUNT(l) AS loans FROM Book b JOIN Loan l ON b.id = l.book.id GROUP BY b ORDER BY loans DESC LIMIT 20")
     Page<ReportResponse> findMostPopularBooks(Pageable pageable, @Param("size") int size);
+
+    @Query("SELECT h, COUNT(y) AS loans FROM Book k JOIN Loan y ON k.id=y.book.id GROUP BY k ORDER BY loans DESC LIMIT 20")
+    Page<ReportResponse>findUnreturnedBooks(Pageable pageable,@Param("size")int size);
+
+     @Query("SELECT h, COUNT(y) AS loans FROM Book k JOIN Loan y ON k.id=y.book.id GROUP BY k ORDER BY loans DESC LIMIT 20")
+    Page<ReportResponse> findExpiredBooks(Pageable pageable,@Param("size") int size);
+
+
+      @Query("SELECT h, COUNT(y) AS loans FROM Book k JOIN Loan y ON k.id=y.book.id GROUP BY k ORDER BY loans DESC LIMIT 20")
+    Page<ReportResponse> findMostBorrowers(Pageable pageable,@Param("size") int size);
 }
