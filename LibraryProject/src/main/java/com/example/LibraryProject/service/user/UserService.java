@@ -1,6 +1,8 @@
 package com.example.LibraryProject.service.user;
 
+import com.example.LibraryProject.entity.enums.RoleType;
 import com.example.LibraryProject.entity.user.User;
+import com.example.LibraryProject.exception.BadRequestException;
 import com.example.LibraryProject.exception.ResourceNotFoundException;
 import com.example.LibraryProject.payload.business.response.ResponseMessage;
 import com.example.LibraryProject.payload.mapper.UserMapper;
@@ -133,8 +135,13 @@ public class UserService {
 
 
         String email = (String) request.getAttribute("email");
+        User user2 = userRepository.findByEmailEquals(email);
 
+        if(Boolean.TRUE.equals(user.getBuiltIn())){
+            throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
+        }else if(user2.getRoles().contains(RoleType.EMPLOYEE)){ // düşün
 
+        }
 
     }
 

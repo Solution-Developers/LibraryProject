@@ -3,6 +3,7 @@ package com.example.LibraryProject.entity.user;
 
 import com.example.LibraryProject.entity.business.Loan;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -79,6 +80,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Loan> loanList;
 
-    @OneToMany(mappedBy = "userId")
-    private Set<UserRole> userRole;
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<Role> roles;
+
+
 }

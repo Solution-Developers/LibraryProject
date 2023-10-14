@@ -10,15 +10,13 @@ public class ErrorMessages {
 
     public static final String NOT_FOUND_AUTHOR = "Error:  Author is not found with id %s";
 
-
     public static final String NOT_FOUND_USER = "Error:  User not found with id %s";
-
 
     public static final String NOT_FOUND_LOAN = "Error:  Loan not found with id %s";
 
     public static final String NOT_FOUND_BOOK = "Error:  Book not found with id %s";
 
-
+    public static final String NOT_PERMITTED = "You do not have any permission to do this operation";
 
 
 
