@@ -98,8 +98,6 @@ public class PublisherService {
         isPublisherExist(id);
 
 
-        //? publisher unique olmalı mı??sonra bak
-
         Publisher publisher = publisherMapper.mapPublisherRequestToPublisher(publisherRequest);
 
         Publisher publisherUpdated = publisherRepository.save(publisher);

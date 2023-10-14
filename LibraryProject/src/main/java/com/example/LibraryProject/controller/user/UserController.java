@@ -55,4 +55,22 @@ public class UserController {
 
 
 
+    //It will return a user
+    //@GetMapping
+
+
+
+    //It will create a user
+    //@PostMapping
+
+
+
+    //It will update the user
+    //@PutMapping
+
+
+    //It will delete the user
+    //@DeleteMapping
+
+
 }
