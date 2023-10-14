@@ -6,6 +6,7 @@ import com.example.LibraryProject.payload.user.UserRequestForSignin;
 import com.example.LibraryProject.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,7 @@ public class UserController {
 
 
 
-    //It will return authenticated user objec
+    //It will return authenticated user object
     @PostMapping("/user")
     @PreAuthorize("hasAnyAuthority('ADMIN','MEMBER','EMPLOYEE')")
     public ResponseMessage<UserResponse> createAuthenticatedUser(@RequestBody @Valid UserRequest userRequest,
@@ -55,13 +56,19 @@ public class UserController {
 
 
 
-    //It will return a user
-    //@GetMapping
-
-
-
     //It will create a user
-    //@PostMapping
+    //@PostMapping("/save")
+
+
+
+
+    //It will return a user
+    @GetMapping("/getUserById/{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseMessage<UserResponse> getUserById(@PathVariable Long userId){
+        return userService.getUserById(userId);
+    }
+
 
 
 
@@ -69,8 +76,18 @@ public class UserController {
     //@PutMapping
 
 
+
+
     //It will delete the user
-    //@DeleteMapping
+    @DeleteMapping("/deleteUserById/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
+    public ResponseEntity<UserResponse> deleteUserById(@PathVariable Long id,
+                                                       HttpServletRequest httpServletRequest){
+
+        return ResponseEntity.ok(userService.deleteUserById(id,httpServletRequest));
+    }
+
+
 
 
 }
