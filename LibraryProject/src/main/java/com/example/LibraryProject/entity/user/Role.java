@@ -2,6 +2,7 @@ package com.example.LibraryProject.entity.user;
 
 
 import com.example.LibraryProject.entity.enums.RoleType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,13 +20,19 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "KTP")
     private Long id;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private RoleType roleName;
 
     private String name;
 
-    @OneToMany(mappedBy = "roleId")
-    private List<UserRole> userRoles;
+
+
+    @ManyToMany
+    @JoinTable(name = "user_role",
+               joinColumns = @JoinColumn(name = "role_id"),
+               inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> users ;
 
 
 }
