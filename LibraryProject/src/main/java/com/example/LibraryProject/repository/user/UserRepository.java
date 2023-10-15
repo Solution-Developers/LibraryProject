@@ -17,4 +17,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query("select u from User u where u.email =?1 ")
     Page<UserResponse> findByLoanListByPage(String email, Pageable pageable);
+
+    User findByEmailEquals(String email);
+
+    boolean existsByPhoneNumber(String phone);
+
+    boolean existsByEmail(String email);
 }

@@ -74,7 +74,7 @@ public class PublisherController {
 
     @PutMapping("/update/{id}")
     public ResponseMessage<PublisherResponse> updatePublisher(@PathVariable Long id,
-                                                                              @RequestBody @Valid PublisherRequest publisherRequest){
+                                                              @RequestBody @Valid PublisherRequest publisherRequest){
 
         return publisherService.updatePublisher(id, publisherRequest);
     }
