@@ -9,5 +9,5 @@ import lombok.*;
 @Builder(toBuilder = true)
 public class BookRequestSave extends BookRequestUpdate{//TODO : Bu islemi default'da false yaparak da yapabilirim ileriki gunlerde duzeltme yapabilirsin. Zaman az diye logic yazilmadi
 
-    private Boolean active;
+    private boolean active;
 }
