@@ -16,8 +16,23 @@ public class UserMapper {
                 .address(userRequest.getAddress())
                 .phone(userRequest.getPhone())
                 .email(userRequest.getEmail())
-                .email(userRequest.getPassword())
+                .password(userRequest.getPassword())
                 .build();
+    }
+
+    public User mapUserRequestToUpdatedUser(UserRequest userRequest, Long userId){
+
+        return User.builder()
+                .id(userId)
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
+                .score(userRequest.getScore())
+                .address(userRequest.getAddress())
+                .phone(userRequest.getPhone())
+                .email(userRequest.getEmail())
+                .password(userRequest.getPassword())
+                .build();
+
     }
 
     //pojo--> response

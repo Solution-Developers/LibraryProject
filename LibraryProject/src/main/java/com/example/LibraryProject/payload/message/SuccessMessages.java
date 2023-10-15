@@ -21,4 +21,7 @@ public class SuccessMessages {
 
     public static final String USER_FOUND = "User is found successfully ";
 
+    public static final String USER_DELETED = "User is deleted successfully ";
+
+
 }
