@@ -23,8 +23,16 @@ public class SuccessMessages {
 
     public static final String USER_FOUND = "User is found successfully ";
 
+
+    public static final String CATEGORY_CREATED = "Category is Saved";
+
+    public static final String CATEGORY_DELETE = "Category is Deleted";
+
+    public static final String CATEGORY_UPDATED ="Category is Updated";
+
     public static final String USER_DELETED = "User is deleted successfully ";
 
 
 }
+
 

@@ -20,6 +20,10 @@ public class ErrorMessages {
     public static final String ALREADY_REGISTER_WITH_PHONE = "Error: Phone number already exists with phone number %s";
     public static final String ALREADY_REGISTER_WITH_EMAIL = "Error: Email already exists with email %s";
 
+    public static final String CATEGORY_ALREADY_EXIST = "Error:  Category is already exist with name %s";
+
+    public static final String NOT_FOUND_CATEGORY = "Error:  Category is not found with id %s" ;
+
 
 
 }
