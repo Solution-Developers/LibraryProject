@@ -1,9 +1,12 @@
 package com.example.LibraryProject.service.user;
 
+import com.example.LibraryProject.entity.enums.RoleType;
 import com.example.LibraryProject.entity.user.User;
+import com.example.LibraryProject.exception.BadRequestException;
 import com.example.LibraryProject.exception.ResourceNotFoundException;
 import com.example.LibraryProject.payload.business.response.ResponseMessage;
 import com.example.LibraryProject.payload.mapper.UserMapper;
+import com.example.LibraryProject.payload.message.ErrorMessages;
 import com.example.LibraryProject.payload.message.SuccessMessages;
 import com.example.LibraryProject.payload.user.UserRequest;
 import com.example.LibraryProject.payload.user.UserRequestForSignin;
@@ -103,5 +106,43 @@ public class UserService {
         return userRepository.findByLoanListByPage(email,pageable);
     }
 
+
+
+    //It will return a user
+    public ResponseMessage<UserResponse> getUserById(Long userId){
+
+        User user = userRepository.findById(userId).orElseThrow(()->
+                new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER, userId)));
+
+        UserResponse userResponse = userMapper.mapUserToUserResponse(user);
+
+        return ResponseMessage.<UserResponse>builder()
+                .message(SuccessMessages.USER_FOUND)
+                .httpStatus(HttpStatus.OK)
+                .object(userResponse)
+                .build();
+
+    }
+
+
+
+    //It will delete the user
+    public UserResponse deleteUserById(Long id, HttpServletRequest request){
+
+        //user helper
+        User user = userRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER, id)));
+
+
+        String email = (String) request.getAttribute("email");
+        User user2 = userRepository.findByEmailEquals(email);
+
+        if(Boolean.TRUE.equals(user.getBuiltIn())){
+            throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
+        }else if(user2.getRoles().contains(RoleType.EMPLOYEE)){ // düşün
+
+        }
+
+    }
 
 }
