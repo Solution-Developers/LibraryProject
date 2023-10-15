@@ -26,6 +26,8 @@ public class UserRequest {
 
     private String password;
 
+    private Long userId;
+
 
 
 }

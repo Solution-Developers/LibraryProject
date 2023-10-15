@@ -43,4 +43,6 @@ public abstract class BookRequestUpdate {
     @NotNull(message = "Please must be write book name")
     private boolean featured;
 
+    private boolean loanable;
+
 }
