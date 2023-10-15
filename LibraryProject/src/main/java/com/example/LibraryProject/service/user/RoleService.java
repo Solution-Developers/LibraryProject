@@ -1,7 +1,6 @@
 package com.example.LibraryProject.service.user;
 
 import com.example.LibraryProject.entity.user.Role;
-import com.example.LibraryProject.entity.user.UserRole;
 import com.example.LibraryProject.repository.user.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

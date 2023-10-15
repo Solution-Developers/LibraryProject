@@ -1,6 +1,7 @@
 package com.example.LibraryProject.service.helper;
 
 import com.example.LibraryProject.entity.user.User;
+import com.example.LibraryProject.exception.ResourceNotFoundException;
 import com.example.LibraryProject.payload.message.ErrorMessages;
 import com.example.LibraryProject.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +15,18 @@ public class UserHelper {
     private final UserRepository userRepository;
 
     public User isUserExistById(Long id){
-    return     userRepository.findById(id).orElseThrow(()->
-                new ResolutionException(String.format(ErrorMessages.NOT_FOUND_USER)));
+
+        return userRepository.findById(id).orElseThrow(()->
+                new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER,id)));
     }
-    //?ResourceNotFoundException
+
 
     public User isUserExistByEmail(String email){
         return userRepository.findByEmail(email);
     }
+
+
+
+
+
 }
