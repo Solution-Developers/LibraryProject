@@ -22,4 +22,11 @@ public class SuccessMessages {
     public static final String LOAN_SAVED= "Loan is created successfully" ;
 
     public static final String USER_FOUND = "User is found successfully ";
+
+    public static final String CATEGORY_CREATED = "Category is Saved";
+
+    public static final String CATEGORY_DELETE = "Category is Deleted";
+
+    public static final String CATEGORY_UPDATED ="Category is Updated";
+
 }
