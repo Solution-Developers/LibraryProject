@@ -4,11 +4,14 @@ import com.example.LibraryProject.entity.business.Loan;
 import com.example.LibraryProject.entity.user.User;
 import com.example.LibraryProject.exception.ResourceNotFoundException;
 import com.example.LibraryProject.payload.business.request.LoanRequest;
+import com.example.LibraryProject.payload.business.request.abstracts.BookRequestSave;
+import com.example.LibraryProject.payload.business.request.abstracts.BookRequestUpdate;
 import com.example.LibraryProject.payload.business.response.BookResponse;
 import com.example.LibraryProject.payload.business.response.LoanResponse;
 import com.example.LibraryProject.payload.business.response.ResponseMessage;
 import com.example.LibraryProject.payload.mapper.LoanMapper;
 import com.example.LibraryProject.payload.message.ErrorMessages;
+import com.example.LibraryProject.payload.message.SuccessMessages;
 import com.example.LibraryProject.payload.user.UserRequest;
 import com.example.LibraryProject.repository.business.LoanRepository;
 import com.example.LibraryProject.service.helper.LoanHelper;
@@ -19,6 +22,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.validation.constraints.Null;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,33 +51,65 @@ public class LoanService {
     //---------------------------------------------------------
     //It will return loans of specified user by id
 
-//todo ITS NEED USER REQUEST CLASS
-//    public Page<LoanResponse> getLoanWithUserId(Long userId, UserRequest userRequest, int page, int size, String sort, String type) {
-//        loanHelper.isLoanExistById(userId);
-//        Pageable pageable = pageableHelper.getPageableWithProperties(page,size,sort,type);
-//    }
+    public Page<LoanResponse> getLoanWithUserId(Long userId, int page, int size, String sort, String type) {
+
+        Pageable pageable = pageableHelper.getPageableWithProperties(page,size,sort,type);
+        return loanRepository.getLoanByBookId(userId,pageable).map(loanMapper::mapForUserLoanToLoanResponseWithNotes);
+
+    }
 
 //---------------------------------------------------------
 //It will return loans of specified book by id
     public Page<LoanResponse> getLoanWithBookId(Long bookId, int page, int size, String sort, String type) {
-        //todo: is book exists
-//        *bookHelper.isBookExistsById(bookId);
         Pageable pageable = pageableHelper.getPageableWithProperties(page,size,sort,type);
-        return loanRepository.getById()
+        return loanRepository.getLoanByBookId(bookId,pageable).map(loanMapper::mapLoanToLoanResponse);
     }
     //---------------------------------------------------------
     //It will return details of a loan of any user
-    public ResponseEntity<LoanResponse> getLoanWithLoanId(Long loanId) {
+    public LoanResponse getLoanWithLoanId(Long loanId) {
+        loanHelper.isLoanExistById(loanId);
+        return loanMapper.mapLoanToLoanResponse(loanRepository.getById(loanId));
     }
 
     //---------------------------------------------------------
     //It will create a loan
-    public ResponseEntity<LoanResponse> saveLoan(UserRequest userRequest, BookRequest bookRequest, LoanRequest loanRequest) {
+    public ResponseMessage<LoanResponse> saveLoan(UserRequest userRequest, BookRequestSave bookRequest, LoanRequest loanRequest) {
+        loanHelper.isLoanExistById(loanRequest.getLoanId());
+
+        if (Boolean.FALSE.equals(bookRequest.getActive())){
+            bookRequest.setActive(false);
+        }
+
+
+        Boolean overDueLoans = loanRepository.findOverDueLoans(userRequest.getUserId());
+        if (Boolean.TRUE.equals(overDueLoans)){
+            // ise user ın kitap alamaz bunu nasıl yaparım anlamadım.
+        //todo : eğerki user aldıgı kitapları vermemiş ise kitap alamaz.
+        }
+
+        if (userRequest.getScore().equals(0)){
+            //todo :score a göre alınan kitapları sınırlandırma
+        }
+
+
+
+
+        Loan savedLoan = loanRepository.save(loanMapper.mapLoanRequestToLoan(loanRequest));
+        return ResponseMessage.<LoanResponse>builder()
+                .object(loanMapper.mapLoanToLoanResponse(savedLoan))
+                .message(SuccessMessages.LOAN_SAVED)
+                .httpStatus(HttpStatus.CREATED)
+                .build();
     }
 
     //---------------------------------------------------------
     //It will update the loan
-    public ResponseEntity<LoanResponse> updateLoan(LoanRequest loanRequest) {
+    public ResponseEntity<LoanResponse> updateLoan(LoanRequest loanRequest, BookRequestUpdate bookRequest) {
+        loanHelper.isLoanExistById(loanRequest.getLoanId());
+
+
+
+
 
     }
 }

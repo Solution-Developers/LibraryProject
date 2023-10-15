@@ -19,6 +19,7 @@ public class SuccessMessages {
 
     public static final String BOOK_DELETED= "Book is deleted" ;
 
-    public static final String USER_FOUND = "User is found successfully ";
+    public static final String LOAN_SAVED= "Loan is created successfully" ;
 
+    public static final String USER_FOUND = "User is found successfully ";
 }

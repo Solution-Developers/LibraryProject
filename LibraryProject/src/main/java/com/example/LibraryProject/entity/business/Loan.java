@@ -56,12 +56,4 @@ public class Loan {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
-
-
-
-
-
-//öylesine yazıldı
-
-
 }

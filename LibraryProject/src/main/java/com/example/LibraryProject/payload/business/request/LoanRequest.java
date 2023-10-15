@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 public class LoanRequest {
 
+
+
     @NotNull(message = "loanDate must not be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd,'T' HH:mm:ss",timezone = "UTC")
     private LocalDateTime loanDate;
@@ -31,5 +33,5 @@ public class LoanRequest {
     //todo : notes for employee or admin
     private String notes;
 
-
+    private Long loanId;
 }
