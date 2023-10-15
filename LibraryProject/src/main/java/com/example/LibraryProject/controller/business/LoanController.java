@@ -2,6 +2,8 @@ package com.example.LibraryProject.controller.business;
 
 import com.example.LibraryProject.entity.business.Loan;
 import com.example.LibraryProject.payload.business.request.LoanRequest;
+import com.example.LibraryProject.payload.business.request.abstracts.BookRequestSave;
+import com.example.LibraryProject.payload.business.request.abstracts.BookRequestUpdate;
 import com.example.LibraryProject.payload.business.response.BookResponse;
 import com.example.LibraryProject.payload.business.response.LoanResponse;
 import com.example.LibraryProject.payload.business.response.ResponseMessage;
@@ -47,7 +49,6 @@ public class LoanController {
     @GetMapping("/user/{userId}")
     public Page<LoanResponse> getLoanWithUserId(
             @PathVariable Long userId,
-            @RequestBody UserRequest userRequest,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "size") int size,
             @RequestParam(value = "sort") String sort,
@@ -73,14 +74,14 @@ public class LoanController {
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','ADMIN')")
     @GetMapping("/auth/{loanId}")
     public ResponseEntity<LoanResponse> getLoanWithLoanId(@PathVariable Long loanId){
-        return loanService.getLoanWithLoanId(loanId);
+        return ResponseEntity.ok(loanService.getLoanWithLoanId(loanId));
     }
     //---------------------------------------------------------
     //It will create a loan
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','ADMIN')")
     @PostMapping("/saveLoans")
-    public ResponseEntity<LoanResponse> saveLoan(@RequestBody @Valid UserRequest userRequest,
-                                                 @RequestBody @Valid BookRequest bookRequest,
+    public ResponseMessage<LoanResponse> saveLoan(@RequestBody @Valid UserRequest userRequest,
+                                                 @RequestBody @Valid BookRequestSave bookRequest,
                                                  @RequestBody @Valid LoanRequest loanRequest){
         return loanService.saveLoan(userRequest,bookRequest,loanRequest);
     }
@@ -88,8 +89,10 @@ public class LoanController {
     //It will update the loan
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','ADMIN')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<LoanResponse> updateLoan(@RequestBody @Valid LoanRequest loanRequest){
-        return loanService.updateLoan(loanRequest);
+    public ResponseEntity<LoanResponse> updateLoan(@RequestBody @Valid LoanRequest loanRequest,
+                                                   @RequestBody @Valid BookRequestUpdate bookRequest){
+        return loanService.updateLoan(loanRequest,bookRequest);
+
     }
 
 
