@@ -1,6 +1,8 @@
 package com.example.LibraryProject.service.user;
 
+import com.example.LibraryProject.entity.business.Loan;
 import com.example.LibraryProject.entity.enums.RoleType;
+import com.example.LibraryProject.entity.user.Role;
 import com.example.LibraryProject.entity.user.User;
 import com.example.LibraryProject.exception.BadRequestException;
 import com.example.LibraryProject.exception.ResourceNotFoundException;
@@ -8,14 +10,12 @@ import com.example.LibraryProject.payload.business.response.ResponseMessage;
 import com.example.LibraryProject.payload.mapper.UserMapper;
 import com.example.LibraryProject.payload.message.ErrorMessages;
 import com.example.LibraryProject.payload.message.SuccessMessages;
-import com.example.LibraryProject.payload.user.UserRequest;
-import com.example.LibraryProject.payload.user.UserRequestForSignin;
-import com.example.LibraryProject.payload.user.UserResponse;
-import com.example.LibraryProject.payload.user.UserResponseWithToken;
+import com.example.LibraryProject.payload.user.*;
 import com.example.LibraryProject.repository.user.UserRepository;
 import com.example.LibraryProject.security.jwt.JwtUtils;
 import com.example.LibraryProject.security.service.UserDetailsImpl;
 import com.example.LibraryProject.service.helper.PageableHelper;
+import com.example.LibraryProject.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,11 +25,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +42,8 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final PageableHelper pageableHelper;
+    private final UniquePropertyValidator uniquePropertyValidator;
+    private final PasswordEncoder passwordEncoder;
 
     //It will return authenticated user object
     public ResponseMessage<UserResponse> createAuthenticatedUser(UserRequest userRequest,HttpServletRequest httpServletRequest) {
@@ -145,4 +149,63 @@ public class UserService {
 
     }
 
+    //It will create a user
+    public ResponseMessage<UserResponse> saveUser(HttpServletRequest httpServletRequest, UserRequestCreate userRequestCreate) {
+        User user= (User) httpServletRequest.getAttribute("email");
+
+        if (user.getRoles().stream().anyMatch(t->t.getRoleName().equals(RoleType.ADMIN))){
+            uniquePropertyValidator.checkDuplicate(userRequestCreate.getPhone(), userRequestCreate.getEmail());
+            User mapUser= userMapper.MapUserRequestCreateToUser(userRequestCreate);
+
+            mapUser.setPassword(passwordEncoder.encode(mapUser.getPassword()));
+
+            List<Loan> loanList= new ArrayList<>();
+
+
+            mapUser.setScore(0);
+            mapUser.setCreateDate(LocalDateTime.now());
+            mapUser.setResetPasswordCode("123456");
+            mapUser.setBuiltIn(false);
+
+            mapUser.setLoanList(loanList);
+
+            User savedUser= userRepository.save(mapUser);
+
+            return ResponseMessage.<UserResponse>builder()
+                    .message(SuccessMessages.SAVE_USER)
+                    .httpStatus(HttpStatus.CREATED)
+                    .object(userMapper.mapUserToUserResponse(savedUser))
+                    .build();
+
+
+        } else if (user.getRoles().stream().anyMatch(t->t.getRoleName().equals(RoleType.EMPLOYEE))) {
+            if (userRequestCreate.getRoles().stream().anyMatch(t->t.getRoleName().equals(RoleType.MEMBER))){
+                uniquePropertyValidator.checkDuplicate(userRequestCreate.getPhone(), userRequestCreate.getEmail());
+                User mapUser= userMapper.MapUserRequestCreateToUser(userRequestCreate);
+
+                mapUser.setPassword(passwordEncoder.encode(mapUser.getPassword()));
+
+                List<Loan> loanList= new ArrayList<>();
+
+
+                mapUser.setScore(0);
+                mapUser.setCreateDate(LocalDateTime.now());
+                mapUser.setResetPasswordCode("123456");
+                mapUser.setBuiltIn(false);
+
+                mapUser.setLoanList(loanList);
+
+                User savedUser= userRepository.save(mapUser);
+
+                return ResponseMessage.<UserResponse>builder()
+                        .message(SuccessMessages.SAVE_USER)
+                        .httpStatus(HttpStatus.CREATED)
+                        .object(userMapper.mapUserToUserResponse(savedUser))
+                        .build();
+
+            }
+            
+        }return null;
+
+    }
 }

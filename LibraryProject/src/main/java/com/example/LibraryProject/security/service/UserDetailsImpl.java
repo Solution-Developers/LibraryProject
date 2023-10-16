@@ -1,10 +1,6 @@
 package com.example.LibraryProject.security.service;
 
-import com.example.LibraryProject.entity.business.Loan;
-import com.example.LibraryProject.entity.user.UserRole;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,10 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Data

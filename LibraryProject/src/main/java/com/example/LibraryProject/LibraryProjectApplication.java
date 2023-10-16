@@ -2,10 +2,8 @@ package com.example.LibraryProject;
 
 import com.example.LibraryProject.entity.enums.RoleType;
 import com.example.LibraryProject.entity.user.Role;
-import com.example.LibraryProject.entity.user.UserRole;
 import com.example.LibraryProject.payload.user.UserRequest;
 import com.example.LibraryProject.repository.user.RoleRepository;
-import com.example.LibraryProject.repository.user.UserRepository;
 import com.example.LibraryProject.service.user.RoleService;
 import com.example.LibraryProject.service.user.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -18,13 +16,13 @@ public class LibraryProjectApplication implements CommandLineRunner {
 
 	private final RoleRepository roleRepository;
 	private final RoleService roleService;
-	private final UserRole userRole;
+	private final UserService userService;
 
 	public LibraryProjectApplication(RoleService roleService,RoleRepository roleRepository,
-									 UserRole userRole){
+									UserService userService){
 		this.roleService=roleService;
 		this.roleRepository=roleRepository;
-		this.userRole=userRole;
+		this.userService=userService;
 	}
 
 
@@ -60,7 +58,7 @@ public class LibraryProjectApplication implements CommandLineRunner {
 
 		}
 
-		if (!roleService.getAllUserRole().stream().allMatch(t->t.getRoleName().equals(RoleType.ADMIN))){
+		if (roleService.countAllAdmins()==0){
 
 			UserRequest admin=new UserRequest();
 			admin.setFirstName("Songul");
@@ -71,7 +69,7 @@ public class LibraryProjectApplication implements CommandLineRunner {
 			admin.setEmail("abc@gmail.com");
 			admin.setPassword("123456789");
 
-			roleRepository.save()
+			userService.createUser(admin,"Admin");
 		}
 
 

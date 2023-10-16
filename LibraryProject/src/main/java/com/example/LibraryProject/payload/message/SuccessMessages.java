@@ -22,4 +22,6 @@ public class SuccessMessages {
     public static final String LOAN_SAVED= "Loan is created successfully" ;
 
     public static final String USER_FOUND = "User is found successfully ";
+    public static final String SAVE_USER="User is created successfully.";
+
 }
