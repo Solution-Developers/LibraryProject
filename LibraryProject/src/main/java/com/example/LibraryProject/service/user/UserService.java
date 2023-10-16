@@ -49,42 +49,40 @@ public class UserService {
     private final UserHelper userHelper;
 
 
-
-
     //It will return authenticated user object
-    public ResponseMessage<UserResponse> createAuthenticatedUser(UserRequest userRequest,HttpServletRequest httpServletRequest) {
-       String email=(String) httpServletRequest.getAttribute("email");
-       User user=userRepository.findByEmail(email);
-       user.setFirstName(userRequest.getFirstName());
-       user.setLastName(userRequest.getLastName());
-       user.setScore(userRequest.getScore());
-       user.setAddress(userRequest.getAddress());
-       user.setPhone(userRequest.getPhone());
-       user.setPassword(userRequest.getPassword());
-       user.setEmail(userRequest.getEmail());
-       User savedUser = userRepository.save(user);
+    public ResponseMessage<UserResponse> createAuthenticatedUser(UserRequest userRequest, HttpServletRequest httpServletRequest) {
+        String email = (String) httpServletRequest.getAttribute("email");
+        User user = userRepository.findByEmail(email);
+        user.setFirstName(userRequest.getFirstName());
+        user.setLastName(userRequest.getLastName());
+        user.setScore(userRequest.getScore());
+        user.setAddress(userRequest.getAddress());
+        user.setPhone(userRequest.getPhone());
+        user.setPassword(userRequest.getPassword());
+        user.setEmail(userRequest.getEmail());
+        User savedUser = userRepository.save(user);
 
-       return ResponseMessage.<UserResponse>builder()
-               .object(userMapper.mapUserToUserResponse(savedUser))
-               .httpStatus(HttpStatus.OK)
-               .message(SuccessMessages.USER_UPDATE_MESSAGE)
-               .build();
+        return ResponseMessage.<UserResponse>builder()
+                .object(userMapper.mapUserToUserResponse(savedUser))
+                .httpStatus(HttpStatus.OK)
+                .message(SuccessMessages.USER_UPDATE_MESSAGE)
+                .build();
     }
 
 
     //It will authenticate the user/ signin
     public ResponseMessage<Object> signin(UserRequestForSignin userRequestForSignin) {
-        String email=userRequestForSignin.getEmail();
-        String password= userRequestForSignin.getPassword();
+        String email = userRequestForSignin.getEmail();
+        String password = userRequestForSignin.getPassword();
 
         if (!(email.equals(userRepository.findByEmail(email).getEmail()) &&
-                password.equals(userRepository.findByEmail(email).getPassword()))){
-            throw  new ResourceNotFoundException("Email or password is incorrect");
+                password.equals(userRepository.findByEmail(email).getPassword()))) {
+            throw new ResourceNotFoundException("Email or password is incorrect");
         }
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token="Bearer "+ jwtUtils.generateJwtToken(authentication);
+        String token = "Bearer " + jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         Set<String> roles = userDetails.getAuthorities()
@@ -93,7 +91,7 @@ public class UserService {
                 .collect(Collectors.toSet());
         Optional<String> role = roles.stream().findFirst(); //hocam role tanımlanmış ama hic kullanılmamıs?
 
-        UserResponseWithToken.UserResponseWithTokenBuilder userResponse= UserResponseWithToken.builder();
+        UserResponseWithToken.UserResponseWithTokenBuilder userResponse = UserResponseWithToken.builder();
         userResponse.firstName(userDetails.getFirstName());
         userResponse.lastName(userDetails.getLastName());
         userResponse.email(userDetails.getEmail());
@@ -107,24 +105,21 @@ public class UserService {
                 .build();
 
     }
+
     //It will return authenticated user loans
     public Page<UserResponse> getUserLoansWithPage(int page, int size, String sort, String type, HttpServletRequest httpServletRequest) {
 
-        Pageable pageable= pageableHelper.getPageableWithProperties(page, size, sort, type);
-        String email= (String) httpServletRequest.getAttribute("email");
+        Pageable pageable = pageableHelper.getPageableWithProperties(page, size, sort, type);
+        String email = (String) httpServletRequest.getAttribute("email");
 
-        return userRepository.findByLoanListByPage(email,pageable);
+        return userRepository.findByLoanListByPage(email, pageable);
     }
 
 
-
-
-
-
     //It will return a user
-    public ResponseMessage<UserResponse> getUserById(Long userId){
+    public ResponseMessage<UserResponse> getUserById(Long userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(()->
+        User user = userRepository.findById(userId).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER, userId)));
 
         UserResponse userResponse = userMapper.mapUserToUserResponse(user);
@@ -138,12 +133,8 @@ public class UserService {
     }
 
 
-
-
-
-
     //It will update the user
-    public ResponseMessage<UserResponse> updateUserById(UserRequest userRequest, Long id, HttpServletRequest servletRequest){
+    public ResponseMessage<UserResponse> updateUserById(UserRequest userRequest, Long id, HttpServletRequest servletRequest) {
 
         //id control
         User user = userHelper.isUserExistById(id); //güncellenmek istenen user
@@ -152,10 +143,10 @@ public class UserService {
         String email = (String) servletRequest.getAttribute("email");
         User user2 = userRepository.findByEmailEquals(email);
 
-        if(Boolean.TRUE.equals(user.getBuiltIn())){
+        if (Boolean.TRUE.equals(user.getBuiltIn())) {
             throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
-        }else if (user2.getRoles().stream().anyMatch(t-> t.getRoleName() == RoleType.EMPLOYEE) &&
-                user2.getRoles().stream().noneMatch(t->t.getRoleName() ==RoleType.ADMIN)) {
+        } else if (user2.getRoles().stream().anyMatch(t -> t.getRoleName() == RoleType.EMPLOYEE) &&
+                user2.getRoles().stream().noneMatch(t -> t.getRoleName() == RoleType.ADMIN)) {
             if ((user.getRoles().stream().anyMatch(t -> t.getRoleName() == RoleType.ADMIN)) ||
                     (user.getRoles().stream().anyMatch(t -> t.getRoleName() == RoleType.EMPLOYEE))) {
                 throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
@@ -163,7 +154,7 @@ public class UserService {
         }
 
         //unique control
-        uniquePropertyValidator.checkUniqueProperties(user,userRequest);
+        uniquePropertyValidator.checkUniqueProperties(user, userRequest);
         //DTO -> POJO
         User updatedUser = userMapper.mapUserRequestToUpdatedUser(userRequest, id);
         //password encode
@@ -180,27 +171,22 @@ public class UserService {
     }
 
 
-
-
-
-
-
     //It will delete the user
     public String deleteUserById(Long id, HttpServletRequest request) {
 
         //user:silinmesini istediğimiz user
         User userWillBeDeleted = userHelper.isUserExistById(id);
 
-       //user2:silme talebinde bulunan user ın email i
+        //user2:silme talebinde bulunan user ın email i
         String email2 = (String) request.getAttribute("email"); //(String) request.getAttribute("email");
         User userWhoDeletes = userRepository.findByEmailEquals(email2);
 
         if (Boolean.TRUE.equals(userWillBeDeleted.getBuiltIn())) {
             throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
-        } else if (userWhoDeletes.getRoles().stream().anyMatch(t-> t.getRoleName() == RoleType.EMPLOYEE) &&
-                   userWhoDeletes.getRoles().stream().noneMatch(t->t.getRoleName() ==RoleType.ADMIN)) {  // contains(RoleType.EMPLOYEE)
-            if ((userWillBeDeleted.getRoles().stream().anyMatch(t-> t.getRoleName() == RoleType.ADMIN)) ||
-                (userWillBeDeleted.getRoles().stream().anyMatch(t-> t.getRoleName() == RoleType.EMPLOYEE))) {
+        } else if (userWhoDeletes.getRoles().stream().anyMatch(t -> t.getRoleName() == RoleType.EMPLOYEE) &&
+                userWhoDeletes.getRoles().stream().noneMatch(t -> t.getRoleName() == RoleType.ADMIN)) {  // contains(RoleType.EMPLOYEE)
+            if ((userWillBeDeleted.getRoles().stream().anyMatch(t -> t.getRoleName() == RoleType.ADMIN)) ||
+                    (userWillBeDeleted.getRoles().stream().anyMatch(t -> t.getRoleName() == RoleType.EMPLOYEE))) {
                 throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
             }
         }
@@ -211,15 +197,15 @@ public class UserService {
 
     //It will create a user
     public ResponseMessage<UserResponse> saveUser(HttpServletRequest httpServletRequest, UserRequestCreate userRequestCreate) {
-        User user= (User) httpServletRequest.getAttribute("email");
+        User user = (User) httpServletRequest.getAttribute("email");
 
-        if (user.getRoles().stream().anyMatch(t->t.getRoleName().equals(RoleType.ADMIN))){
+        if (user.getRoles().stream().anyMatch(t -> t.getRoleName().equals(RoleType.ADMIN))) {
             uniquePropertyValidator.checkDuplicate(userRequestCreate.getPhone(), userRequestCreate.getEmail());
-            User mapUser= userMapper.MapUserRequestCreateToUser(userRequestCreate);
+            User mapUser = userMapper.MapUserRequestCreateToUser(userRequestCreate);
 
             mapUser.setPassword(passwordEncoder.encode(mapUser.getPassword()));
 
-            List<Loan> loanList= new ArrayList<>();
+            List<Loan> loanList = new ArrayList<>();
 
 
             mapUser.setScore(0);
@@ -229,7 +215,7 @@ public class UserService {
 
             mapUser.setLoanList(loanList);
 
-            User savedUser= userRepository.save(mapUser);
+            User savedUser = userRepository.save(mapUser);
 
             return ResponseMessage.<UserResponse>builder()
                     .message(SuccessMessages.SAVE_USER)
@@ -238,14 +224,14 @@ public class UserService {
                     .build();
 
 
-        } else if (user.getRoles().stream().anyMatch(t->t.getRoleName().equals(RoleType.EMPLOYEE))) {
-            if (userRequestCreate.getRoles().stream().anyMatch(t->t.getRoleName().equals(RoleType.MEMBER))){
+        } else if (user.getRoles().stream().anyMatch(t -> t.getRoleName().equals(RoleType.EMPLOYEE))) {
+            if (userRequestCreate.getRoles().stream().anyMatch(t -> t.getRoleName().equals(RoleType.MEMBER))) {
                 uniquePropertyValidator.checkDuplicate(userRequestCreate.getPhone(), userRequestCreate.getEmail());
-                User mapUser= userMapper.MapUserRequestCreateToUser(userRequestCreate);
+                User mapUser = userMapper.MapUserRequestCreateToUser(userRequestCreate);
 
                 mapUser.setPassword(passwordEncoder.encode(mapUser.getPassword()));
 
-                List<Loan> loanList= new ArrayList<>();
+                List<Loan> loanList = new ArrayList<>();
 
 
                 mapUser.setScore(0);
@@ -255,7 +241,7 @@ public class UserService {
 
                 mapUser.setLoanList(loanList);
 
-                User savedUser= userRepository.save(mapUser);
+                User savedUser = userRepository.save(mapUser);
 
                 return ResponseMessage.<UserResponse>builder()
                         .message(SuccessMessages.SAVE_USER)
@@ -264,9 +250,39 @@ public class UserService {
                         .build();
 
             }
-            
-        }return null;
+
+        }
+        return null;
 
     }
 
+    //saveUserAdmin
+    public ResponseMessage<UserResponse> saveUserAdmin(UserRequest userRequest) {
+
+
+        uniquePropertyValidator.checkDuplicate(userRequest.getPhone(), userRequest.getEmail());
+        User mapUser = userMapper.mapUserRequestToUser(userRequest);
+
+        mapUser.setPassword(passwordEncoder.encode(mapUser.getPassword()));
+
+        List<Loan> loanList = new ArrayList<>();
+
+
+        mapUser.setScore(0);
+        mapUser.setCreateDate(LocalDateTime.now());
+        mapUser.setResetPasswordCode("123456");
+        mapUser.setBuiltIn(true);
+
+        mapUser.setLoanList(loanList);
+
+        User savedUser = userRepository.save(mapUser);
+
+        return ResponseMessage.<UserResponse>builder()
+                .message(SuccessMessages.SAVE_USER)
+                .httpStatus(HttpStatus.CREATED)
+                .object(userMapper.mapUserToUserResponse(savedUser))
+                .build();
+
+
+    }
 }
