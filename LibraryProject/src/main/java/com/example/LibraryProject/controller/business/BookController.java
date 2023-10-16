@@ -19,7 +19,7 @@ public class BookController {
 
 
     // * NOT : saveBooks() ******************** POST - Admin
-    @PostMapping("/save")
+    @PostMapping("/save")    // http://localhost:8080/books/save
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseMessage<BookResponse> saveBook(@RequestBody @Valid BookRequestSave bookRequest){
 
@@ -27,7 +27,7 @@ public class BookController {
     }
 
     // * NOT : getBooksByPageable() ******************** GET - Tüm roller
-    @GetMapping
+    @GetMapping  // http://localhost:8080/books/get/3
     @PreAuthorize("hasAnyAuthority('ADMIN','MEMBER','EMPLOYEE','ANONYMOUS')")
     public Page<BookResponse> getAllBooksByPageWithId(
             @PathVariable Long id,
@@ -43,7 +43,7 @@ public class BookController {
 
 
     // * NOT : getBookById() ******************** GET - Tüm roller
-    @GetMapping("/{id}")
+    @GetMapping("get/{bookId}") // http://localhost:8080/books/get/3
     @PreAuthorize("hasAnyAuthority('ADMIN','MEMBER','EMPLOYEE','ANONYMOUS')")
     public BookResponse getBookById(@PathVariable Long bookId){
 
@@ -51,11 +51,16 @@ public class BookController {
     }
 
     // * NOT : updateBooksById() ******************** PUT - Admin
+    @GetMapping("update/{bookId}") // http://localhost:8080/books/update/3
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public BookResponse updateBooksById(@PathVariable Long bookId){
 
+        return bookService.updateBooksById(bookId);
+    }
 
 
     // * NOT : deleteBooksById() ******************** DELETE - Admin
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{bookId}") // http://localhost:8080/books/delete/3
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseMessage deleteBookById(@PathVariable Long bookId){
 
