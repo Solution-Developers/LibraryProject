@@ -15,6 +15,8 @@ import com.example.LibraryProject.repository.user.UserRepository;
 import com.example.LibraryProject.security.jwt.JwtUtils;
 import com.example.LibraryProject.security.service.UserDetailsImpl;
 import com.example.LibraryProject.service.helper.PageableHelper;
+
+import com.example.LibraryProject.service.helper.UserHelper;
 import com.example.LibraryProject.service.validator.UniquePropertyValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +29,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -42,8 +43,13 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final PageableHelper pageableHelper;
+
     private final UniquePropertyValidator uniquePropertyValidator;
     private final PasswordEncoder passwordEncoder;
+    private final UserHelper userHelper;
+
+
+
 
     //It will return authenticated user object
     public ResponseMessage<UserResponse> createAuthenticatedUser(UserRequest userRequest,HttpServletRequest httpServletRequest) {
@@ -85,7 +91,7 @@ public class UserService {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
-        Optional<String> role = roles.stream().findFirst();
+        Optional<String> role = roles.stream().findFirst(); //hocam role tanımlanmış ama hic kullanılmamıs?
 
         UserResponseWithToken.UserResponseWithTokenBuilder userResponse= UserResponseWithToken.builder();
         userResponse.firstName(userDetails.getFirstName());
@@ -112,6 +118,9 @@ public class UserService {
 
 
 
+
+
+
     //It will return a user
     public ResponseMessage<UserResponse> getUserById(Long userId){
 
@@ -130,22 +139,73 @@ public class UserService {
 
 
 
-    //It will delete the user
-    public UserResponse deleteUserById(Long id, HttpServletRequest request){
-
-        //user helper
-        User user = userRepository.findById(id).orElseThrow(()->
-                new ResourceNotFoundException(String.format(ErrorMessages.NOT_FOUND_USER, id)));
 
 
-        String email = (String) request.getAttribute("email");
+
+    //It will update the user
+    public ResponseMessage<UserResponse> updateUserById(UserRequest userRequest, Long id, HttpServletRequest servletRequest){
+
+        //id control
+        User user = userHelper.isUserExistById(id); //güncellenmek istenen user
+
+        //user2:güncelleme talebinde bulunan user ın email i
+        String email = (String) servletRequest.getAttribute("email");
         User user2 = userRepository.findByEmailEquals(email);
 
         if(Boolean.TRUE.equals(user.getBuiltIn())){
             throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
-        }else if(user2.getRoles().contains(RoleType.EMPLOYEE)){ // düşün
-
+        }else if (user2.getRoles().stream().anyMatch(t-> t.getRoleName() == RoleType.EMPLOYEE) &&
+                user2.getRoles().stream().noneMatch(t->t.getRoleName() ==RoleType.ADMIN)) {
+            if ((user.getRoles().stream().anyMatch(t -> t.getRoleName() == RoleType.ADMIN)) ||
+                    (user.getRoles().stream().anyMatch(t -> t.getRoleName() == RoleType.EMPLOYEE))) {
+                throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
+            }
         }
+
+        //unique control
+        uniquePropertyValidator.checkUniqueProperties(user,userRequest);
+        //DTO -> POJO
+        User updatedUser = userMapper.mapUserRequestToUpdatedUser(userRequest, id);
+        //password encode
+        updatedUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+
+
+        User savedUser = userRepository.save(updatedUser);
+
+        return ResponseMessage.<UserResponse>builder()
+                .message(SuccessMessages.USER_UPDATE_MESSAGE)
+                .httpStatus(HttpStatus.OK)
+                .object(userMapper.mapUserToUserResponse(savedUser))
+                .build();
+    }
+
+
+
+
+
+
+
+    //It will delete the user
+    public String deleteUserById(Long id, HttpServletRequest request) {
+
+        //user:silinmesini istediğimiz user
+        User userWillBeDeleted = userHelper.isUserExistById(id);
+
+       //user2:silme talebinde bulunan user ın email i
+        String email2 = (String) request.getAttribute("email"); //(String) request.getAttribute("email");
+        User userWhoDeletes = userRepository.findByEmailEquals(email2);
+
+        if (Boolean.TRUE.equals(userWillBeDeleted.getBuiltIn())) {
+            throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
+        } else if (userWhoDeletes.getRoles().stream().anyMatch(t-> t.getRoleName() == RoleType.EMPLOYEE) &&
+                   userWhoDeletes.getRoles().stream().noneMatch(t->t.getRoleName() ==RoleType.ADMIN)) {  // contains(RoleType.EMPLOYEE)
+            if ((userWillBeDeleted.getRoles().stream().anyMatch(t-> t.getRoleName() == RoleType.ADMIN)) ||
+                (userWillBeDeleted.getRoles().stream().anyMatch(t-> t.getRoleName() == RoleType.EMPLOYEE))) {
+                throw new BadRequestException(ErrorMessages.NOT_PERMITTED);
+            }
+        }
+        userRepository.deleteById(id);
+        return SuccessMessages.USER_DELETED;
 
     }
 
@@ -208,4 +268,5 @@ public class UserService {
         }return null;
 
     }
+
 }

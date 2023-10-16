@@ -81,7 +81,17 @@ public class UserController {
 
 
     //It will update the user
-    //@PutMapping
+    @PutMapping("/update/{userId}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
+    public ResponseMessage<UserResponse> updateUserById(@RequestBody @Valid UserRequest userRequest,
+                                                       @PathVariable Long userId,
+                                                       HttpServletRequest httpServletRequest){
+        return userService.updateUserById(userRequest,userId,httpServletRequest);
+
+    }
+
+
+
 
 
 
@@ -89,8 +99,8 @@ public class UserController {
     //It will delete the user
     @DeleteMapping("/deleteUserById/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
-    public ResponseEntity<UserResponse> deleteUserById(@PathVariable Long id,
-                                                       HttpServletRequest httpServletRequest){
+    public ResponseEntity<String> deleteUserById(@PathVariable Long id,
+                                                 HttpServletRequest httpServletRequest){
 
         return ResponseEntity.ok(userService.deleteUserById(id,httpServletRequest));
     }

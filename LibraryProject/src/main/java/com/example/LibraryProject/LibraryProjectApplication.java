@@ -5,7 +5,6 @@ import com.example.LibraryProject.entity.user.Role;
 import com.example.LibraryProject.payload.user.UserRequest;
 import com.example.LibraryProject.repository.user.RoleRepository;
 import com.example.LibraryProject.service.user.RoleService;
-import com.example.LibraryProject.service.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

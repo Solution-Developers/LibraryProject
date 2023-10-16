@@ -47,6 +47,7 @@ public class User {
 
    @NotNull
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "ddd-ddd-dddd") //todo format phone number kısmı
+   @Column(unique = true)
    private String phone;
 
    @Column(nullable = true)

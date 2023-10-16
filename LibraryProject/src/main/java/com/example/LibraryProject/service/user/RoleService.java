@@ -2,7 +2,10 @@ package com.example.LibraryProject.service.user;
 
 import com.example.LibraryProject.entity.enums.RoleType;
 import com.example.LibraryProject.entity.user.Role;
+<<<<<<< HEAD
 import com.example.LibraryProject.entity.user.User;
+=======
+>>>>>>> main
 import com.example.LibraryProject.repository.user.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
