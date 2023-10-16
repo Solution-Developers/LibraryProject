@@ -56,4 +56,21 @@ public class BookService {
         return bookRepository.findByBookById(id,pageable).map(bookMapper::mapBookToBookResponse);
     }
 
+    public BookResponse updateBooksById(Long bookId) {
+        Book book = isBookExistById(bookId);
+        if(
+                !(book.getBookName().equals(bookRequest.getBookName())) &&
+                        (bookRepository.existsByBookName(bookRequest.getBookName())) // Derived Query
+        ) {
+            throw new ConflictException(
+                    String.format(ErrorMessages.BOOK_ALREADY_EXIST_WITH_BOOK_NAME,bookRequest.getBookName()));
+        }
+        Book updatedBook = bookMapper.mapUpdateBookRequestToBook(bookRequest,bookId);
+
+        Book savedBook = bookRepository.save(updatedBook);
+
+        return bookMapper.mapBookToBookResponse(savedBook);
+
+    }
+
 }
