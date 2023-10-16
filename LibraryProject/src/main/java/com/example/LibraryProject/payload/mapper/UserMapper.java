@@ -2,6 +2,7 @@ package com.example.LibraryProject.payload.mapper;
 
 import com.example.LibraryProject.entity.user.User;
 import com.example.LibraryProject.payload.user.UserRequest;
+import com.example.LibraryProject.payload.user.UserRequestCreate;
 import com.example.LibraryProject.payload.user.UserResponse;
 import org.springframework.stereotype.Component;
 
@@ -47,5 +48,19 @@ public class UserMapper {
                 .email(user.getEmail())
                 .loanList(user.getLoanList())
                 .build();
+    }
+
+    public  User MapUserRequestCreateToUser(UserRequestCreate userRequestCreate){
+        return User.builder()
+                .firstName(userRequestCreate.getFirstName())
+                .lastName(userRequestCreate.getLastName())
+                .address(userRequestCreate.getAddress())
+                .phone(userRequestCreate.getPhone())
+                .birthDate(userRequestCreate.getBirthDate())
+                .email(userRequestCreate.getEmail())
+                .password(userRequestCreate.getPassword())
+                .roles(userRequestCreate.getRoles())
+                .build();
+
     }
 }

@@ -2,6 +2,7 @@ package com.example.LibraryProject.controller.user;
 
 import com.example.LibraryProject.payload.business.response.ResponseMessage;
 import com.example.LibraryProject.payload.user.UserRequest;
+import com.example.LibraryProject.payload.user.UserRequestCreate;
 import com.example.LibraryProject.payload.user.UserRequestForSignin;
 import com.example.LibraryProject.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -56,8 +57,15 @@ public class UserController {
 
 
 
+
     //It will create a user
-    //@PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('ADMIN','EMPLOYEE')")
+    @PostMapping
+    public ResponseMessage<UserResponse> saveUser(HttpServletRequest httpServletRequest,
+                                                  @RequestBody @Valid UserRequestCreate userRequestCreate){
+        return userService.saveUser(httpServletRequest,userRequestCreate);
+
+    }
 
 
 

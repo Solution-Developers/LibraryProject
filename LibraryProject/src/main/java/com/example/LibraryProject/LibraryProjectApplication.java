@@ -15,13 +15,13 @@ public class LibraryProjectApplication implements CommandLineRunner {
 
 	private final RoleRepository roleRepository;
 	private final RoleService roleService;
-	private final UserRole userRole;
+	private final UserService userService;
 
 	public LibraryProjectApplication(RoleService roleService,RoleRepository roleRepository,
-									 UserRole userRole){
+									UserService userService){
 		this.roleService=roleService;
 		this.roleRepository=roleRepository;
-		this.userRole=userRole;
+		this.userService=userService;
 	}
 
 
@@ -57,7 +57,7 @@ public class LibraryProjectApplication implements CommandLineRunner {
 
 		}
 
-		if (!roleService.getAllUserRole().stream().allMatch(t->t.getRoleName().equals(RoleType.ADMIN))){
+		if (roleService.countAllAdmins()==0){
 
 			UserRequest admin=new UserRequest();
 			admin.setFirstName("Songul");
@@ -68,7 +68,7 @@ public class LibraryProjectApplication implements CommandLineRunner {
 			admin.setEmail("abc@gmail.com");
 			admin.setPassword("123456789");
 
-			roleRepository.save()
+			userService.createUser(admin,"Admin");
 		}
 
 

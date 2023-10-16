@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import javax.servlet.http.HttpServletRequest;
 
 public interface UserRepository extends JpaRepository<User,Long> {
 
@@ -17,6 +16,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     @Query("select u from User u where u.email =?1 ")
     Page<UserResponse> findByLoanListByPage(String email, Pageable pageable);
+
 
     User findByEmailEquals(String email);
 

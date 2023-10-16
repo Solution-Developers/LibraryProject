@@ -13,7 +13,6 @@ import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "t_user")
@@ -40,7 +39,7 @@ public class User {
    @NotNull(message = "Score must be between -2 and 2")
    @Min(-2)
    @Max(+2) //
-   private Integer score; //! int demiş klavuzda
+   private Integer score;
 
    @NotNull(message = "Address must not be empty")
    @Size(min = 10, max = 100)
