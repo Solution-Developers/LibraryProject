@@ -53,4 +53,6 @@ public class Book {
 
     @OneToMany(mappedBy = "books", cascade = CascadeType.ALL)
     private List<Loan> loans;
+
+
 }
