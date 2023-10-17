@@ -1,8 +1,11 @@
 package com.example.LibraryProject.payload.business.response;
 
+import com.example.LibraryProject.entity.business.Book;
+import com.example.LibraryProject.entity.user.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +28,9 @@ public class LoanResponse {
 
     private String notes;
 
+    private List<Book> bookList;
+
+    private User user;
 
 
 

@@ -80,18 +80,15 @@ public class LoanController {
     //It will create a loan
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','ADMIN')")
     @PostMapping("/saveLoans")
-    public ResponseMessage<LoanResponse> saveLoan(@RequestBody @Valid UserRequest userRequest,
-                                                 @RequestBody @Valid BookRequestSave bookRequest,
-                                                 @RequestBody @Valid LoanRequest loanRequest){
-        return loanService.saveLoan(userRequest,bookRequest,loanRequest);
+    public ResponseMessage<LoanResponse> saveLoan(@RequestBody @Valid LoanRequest loanRequest){
+        return loanService.saveLoan(loanRequest);
     }
     //---------------------------------------------------------
     //It will update the loan
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','ADMIN')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<LoanResponse> updateLoan(@RequestBody @Valid LoanRequest loanRequest,
-                                                   @RequestBody @Valid BookRequestUpdate bookRequest){
-        return loanService.updateLoan(loanRequest,bookRequest);
+    public ResponseEntity<LoanResponse> updateLoan(@RequestBody @Valid LoanRequest loanRequest){
+        return loanService.updateLoan(loanRequest);
 
     }
 

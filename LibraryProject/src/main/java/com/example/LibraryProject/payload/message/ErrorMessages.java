@@ -27,6 +27,9 @@ public class ErrorMessages {
 
     public static final String NOT_FOUND_CATEGORY = "Error:  Category is not found with id %s" ;
 
+    public static final String LOAN_BOOKLIST_SIZE_EXCEPTION = "Error: A maximum of %d books can be borrowed ";
+    public static final String OVERDUE_LOAN_DATE = "There is a book that is past due date.";
+
 
 
 }
