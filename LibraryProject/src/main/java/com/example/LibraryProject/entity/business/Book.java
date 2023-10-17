@@ -27,15 +27,15 @@ public class Book {
 
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private Long authorId;
+    private Author authorId;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private Long publisherId;
+    private Publisher publisherId;
 
     private int publishDate;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private Long categoryId;
+    private Category categoryId;
 
     private File image;
 
