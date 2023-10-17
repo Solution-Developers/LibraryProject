@@ -15,6 +15,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 
@@ -56,4 +57,12 @@ public class Loan {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
+
+    @OneToMany(mappedBy = "books", cascade = CascadeType.ALL)
+    private List<Book> bookList;
+
+    @Nullable
+    private List<Loan> loanList;
+
+
 }
