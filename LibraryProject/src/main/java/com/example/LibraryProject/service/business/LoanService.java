@@ -107,11 +107,9 @@ public class LoanService {
         }
 
         //---------------
-        Loan savedLoan = loanRepository.save(createLoan(loanRequest));
-
         if ((userScore > 2)|| (userScore == 2)){
             if (loanList.size()<6){
-            loanList.add(createLoan(loanRequest).toBuilder()
+             loanList.add(createLoan(loanRequest).toBuilder()
                     .returnDate(loanRequest.getReturnDate().plusDays(20))
                     .build());
             }else {
@@ -133,7 +131,7 @@ public class LoanService {
                         .returnDate(loanRequest.getReturnDate().plusDays(10))
                         .build());
             }else {
-                throw new BadRequestException(String.format(ErrorMessages.LOAN_BOOKLIST_SIZE_EXCEPTION,2));
+                throw new BadRequestException(String.format(ErrorMessages.LOAN_BOOKLIST_SIZE_EXCEPTION,3));
             }
         }
         if (userScore == -1 ){
@@ -142,7 +140,7 @@ public class LoanService {
                         .returnDate(loanRequest.getReturnDate().plusDays(6))
                         .build());
             }else {
-                throw new BadRequestException(String.format(ErrorMessages.LOAN_BOOKLIST_SIZE_EXCEPTION,1));
+                throw new BadRequestException(String.format(ErrorMessages.LOAN_BOOKLIST_SIZE_EXCEPTION,2));
             }
         }
         if ((userScore < -2)|| (userScore == -2)){
@@ -151,9 +149,12 @@ public class LoanService {
                         .returnDate(loanRequest.getReturnDate().plusDays(3))
                         .build());
             }else {
-                throw new BadRequestException(String.format(ErrorMessages.LOAN_BOOKLIST_SIZE_EXCEPTION,7))
+                throw new BadRequestException(String.format(ErrorMessages.LOAN_BOOKLIST_SIZE_EXCEPTION,1));
             }
         }
+        //saved to database and changed loanable field to false
+        Loan savedLoan = loanRepository.save(createLoan(loanRequest));
+        savedLoan.getBook().setLoanable(false);
 
         return ResponseMessage.<LoanResponse>builder()
                 .object(loanMapper.mapLoanToLoanResponse(savedLoan))
@@ -176,8 +177,29 @@ public class LoanService {
     }
     //---------------------------------------------------------
     //It will update the loan
-    public ResponseEntity<LoanResponse> updateLoan(LoanRequest loanRequest) {
+    public ResponseMessage<LoanResponse> updateLoan(LoanRequest loanRequest) {
+       //id check
         loanHelper.isLoanExistById(loanRequest.getLoanId());
+        //find loan by loanId
+        Loan loan =loanRepository.getById(loanRequest.getLoanId());
 
+        if (loanRequest.getReturnDate() != null){
+            loan.getBook().setLoanable(Boolean.TRUE);
+            loan.setReturnDate(loanRequest.getReturnDate());
+            if ( (loan.getReturnDate().equals(loanRequest.getReturnDate()))){
+                loan.getUser().setScore(loan.getUser().getScore()+1);
+            }
+            if (loanRequest.getReturnDate().isAfter(loan.getReturnDate())){
+                loan.getUser().setScore(loan.getUser().getScore()-1);
+            }
+        }else {
+            loan.setNotes(loanRequest.getNotes());
+        }
+
+        return ResponseMessage.<LoanResponse>builder()
+                .message(SuccessMessages.LOAN_UPDATE_MESSAGE)
+                .httpStatus(HttpStatus.OK)
+                .object(loanMapper.mapLoanToLoanResponse(loan))
+                .build();
     }
 }
