@@ -55,7 +55,7 @@ public class LoanController {
             @RequestParam(value = "type") String type
     ){
 
-        return loanService.getLoanWithUserId(userId,userRequest,page,size,sort,type);
+        return loanService.getLoanWithUserId(userId,page,size,sort,type);
     }
     //---------------------------------------------------------
     //It will return loans of specified book by id
@@ -87,7 +87,7 @@ public class LoanController {
     //It will update the loan
     @PreAuthorize("hasAnyAuthority('EMPLOYEE','ADMIN')")
     @PutMapping("/update/{id}")
-    public ResponseEntity<LoanResponse> updateLoan(@RequestBody @Valid LoanRequest loanRequest){
+    public ResponseMessage<LoanResponse> updateLoan(@RequestBody @Valid LoanRequest loanRequest){
         return loanService.updateLoan(loanRequest);
 
     }

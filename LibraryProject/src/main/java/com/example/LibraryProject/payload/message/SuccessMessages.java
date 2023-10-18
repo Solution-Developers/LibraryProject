@@ -25,9 +25,7 @@ public class SuccessMessages {
 
     public static final String SAVE_USER="User is created successfully.";
 
-
-
-
+    public static final String LOAN_UPDATE_MESSAGE="Loan is created successfully.";
 
     public static final String CATEGORY_CREATED = "Category is Saved";
 
