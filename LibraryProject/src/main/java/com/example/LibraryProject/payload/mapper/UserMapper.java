@@ -1,6 +1,7 @@
 package com.example.LibraryProject.payload.mapper;
 
 import com.example.LibraryProject.entity.user.User;
+import com.example.LibraryProject.payload.user.UserRegister;
 import com.example.LibraryProject.payload.user.UserRequest;
 import com.example.LibraryProject.payload.user.UserRequestCreate;
 import com.example.LibraryProject.payload.user.UserResponse;
@@ -60,6 +61,20 @@ public class UserMapper {
                 .email(userRequestCreate.getEmail())
                 .password(userRequestCreate.getPassword())
                 .roles(userRequestCreate.getRoles())
+                .build();
+
+    }
+
+
+    public User mapUserRegisterToUser(UserRegister userRegister){
+        return User.builder()
+                .firstName(userRegister.getFirstName())
+                .lastName(userRegister.getLastName())
+                .address(userRegister.getAddress())
+                .phone(userRegister.getPhone())
+                .birthDate(userRegister.getBirthDate())
+                .email(userRegister.getEmail())
+                .password(userRegister.getPassword())
                 .build();
 
     }
