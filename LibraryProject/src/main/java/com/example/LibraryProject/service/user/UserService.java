@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -89,7 +90,7 @@ public class UserService {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
-        Optional<String> role = roles.stream().findFirst(); //hocam role tanımlanmış ama hic kullanılmamıs?
+        Optional<String> role = roles.stream().findFirst();
 
         UserResponseWithToken.UserResponseWithTokenBuilder userResponse = UserResponseWithToken.builder();
         userResponse.firstName(userDetails.getFirstName());
@@ -285,4 +286,42 @@ public class UserService {
 
 
     }
+
+
+    //It will create the user
+    public ResponseEntity<UserResponse> register(UserRegister userRegister) {
+
+        uniquePropertyValidator.checkDuplicate(userRegister.getPhone(),userRegister.getEmail());
+
+        User user = userMapper.mapUserRegisterToUser(userRegister);
+
+        List<Loan> loanList = new ArrayList<>();
+        List<Role> roles = new ArrayList<>();
+        roles.add(Role.builder().roleName(RoleType.MEMBER).build());
+
+        user.setScore(0);
+        user.setCreateDate(LocalDateTime.now());
+        user.setResetPasswordCode("123456");
+        user.setBuiltIn(false);
+        user.setLoanList(loanList);
+        user.setRoles(roles);
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        User savedUser = userRepository.save(user);
+
+        return ResponseEntity.ok(userMapper.mapUserToUserResponse(savedUser));
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
